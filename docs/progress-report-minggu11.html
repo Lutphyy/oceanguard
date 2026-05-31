@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Report Minggu 11 - OceanGuard</title>
+    <style>
+        /* Reset & Base */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 12pt;
+            line-height: 1.5;
+            color: #000;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 25mm 30mm;
+            background: #fff;
+        }
+
+        /* Headings */
+        h1 {
+            font-size: 14pt;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: 12pt;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            page-break-after: avoid;
+        }
+
+        h3 {
+            font-size: 12pt;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+
+        /* Paragraphs */
+        p {
+            text-align: justify;
+            text-indent: 1.27cm;
+            margin-bottom: 10px;
+        }
+
+        p.no-indent {
+            text-indent: 0;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0 15px 0;
+            font-size: 11pt;
+        }
+
+        table, th, td {
+            border: 1px solid #000;
+        }
+
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            padding: 6px 8px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        td {
+            padding: 6px 8px;
+            vertical-align: top;
+        }
+
+        /* Lists */
+        ol, ul {
+            margin-left: 1.27cm;
+            margin-bottom: 10px;
+        }
+
+        li {
+            margin-bottom: 4px;
+            text-align: justify;
+        }
+
+        /* Images */
+        .figure {
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .figure img {
+            max-width: 100%;
+            height: auto;
+            max-height: 350px;
+        }
+
+        .figure-caption {
+            font-size: 10pt;
+            font-style: italic;
+            margin-top: 5px;
+            text-align: center;
+            text-indent: 0;
+        }
+
+        /* Subtitle */
+        .subtitle {
+            text-align: center;
+            font-size: 12pt;
+            margin-bottom: 20px;
+        }
+
+        /* Section numbering */
+        .section-num {
+            font-weight: bold;
+        }
+
+        /* Links */
+        a {
+            color: #0563C1;
+            text-decoration: underline;
+        }
+
+        /* Horizontal Rule */
+        hr {
+            border: none;
+            border-top: 1px solid #000;
+            margin: 20px 0;
+        }
+
+        /* Reference list */
+        .references {
+            margin-left: 1.27cm;
+            text-indent: -1.27cm;
+            padding-left: 1.27cm;
+        }
+
+        .references p {
+            text-indent: -1.27cm;
+            padding-left: 1.27cm;
+            margin-bottom: 6px;
+        }
+
+        /* Print-friendly */
+        @media print {
+            body {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- JUDUL LAPORAN -->
+    <h1>PROGRESS REPORT MINGGU 11</h1>
+    <h1>PROPOSAL DAN DATASET</h1>
+    <p class="subtitle"><strong>Mata Kuliah:</strong> Pengolahan Citra Digital — Tahun Ajaran Genap 2025/2026</p>
+
+    <hr>
+
+    <!-- ========================================= -->
+    <!-- 1. JUDUL PROYEK -->
+    <!-- ========================================= -->
+    <h2>1. Judul Proyek</h2>
+    <p class="no-indent" style="text-align: center; font-size: 13pt; font-weight: bold; margin: 10px 0 20px 0;">
+        "OceanGuard: Sistem Deteksi dan Klasifikasi Sampah Laut Berbasis Deep Learning Menggunakan YOLOv8"
+    </p>
+
+    <!-- ========================================= -->
+    <!-- 2. LATAR BELAKANG -->
+    <!-- ========================================= -->
+    <h2>2. Latar Belakang</h2>
+
+    <p>
+        Indonesia sebagai negara maritim terbesar di dunia memiliki garis pantai sepanjang lebih dari 108.000 km dan luas perairan mencapai 6,4 juta km². Namun, kekayaan maritim ini menghadapi ancaman serius dari pencemaran sampah laut (<i>marine debris</i>). Berdasarkan data dari Kementerian Lingkungan Hidup dan Kehutanan (KLHK), Indonesia menghasilkan sekitar 7,8 juta ton sampah plastik per tahun, di mana sekitar 4,9 juta ton di antaranya tidak terkelola dengan baik dan berpotensi masuk ke laut. Kondisi ini menempatkan Indonesia sebagai salah satu penyumbang sampah laut terbesar di dunia.
+    </p>
+
+    <p>
+        Pencemaran sampah laut memberikan dampak negatif yang sangat besar terhadap ekosistem maritim. Sampah plastik yang terakumulasi di dasar laut dan pesisir pantai dapat merusak habitat terumbu karang, mengancam kehidupan biota laut, serta mengganggu aktivitas perikanan dan pariwisata bahari. Lebih jauh lagi, mikroplastik yang terbentuk dari degradasi sampah plastik dapat masuk ke dalam rantai makanan dan berpotensi membahayakan kesehatan manusia.
+    </p>
+
+    <p>
+        Upaya monitoring dan pembersihan sampah laut secara manual memiliki keterbatasan yang signifikan, baik dari segi waktu, tenaga, maupun biaya. Penyelam dan relawan memerlukan waktu yang lama untuk menyurvei area perairan yang luas, sementara kondisi bawah laut seperti visibility yang rendah, arus, dan kedalaman menjadi tantangan tersendiri. Oleh karena itu, diperlukan solusi berbasis teknologi yang mampu mendeteksi dan mengklasifikasi sampah laut secara otomatis dan efisien.
+    </p>
+
+    <p>
+        Kemajuan dalam bidang <i>computer vision</i> dan <i>deep learning</i> membuka peluang untuk mengatasi permasalahan ini. Model <i>object detection</i> berbasis <i>deep learning</i>, khususnya YOLO (<i>You Only Look Once</i>), telah menunjukkan performa yang sangat baik dalam mendeteksi objek secara <i>real-time</i>. YOLOv8, sebagai versi terbaru dari keluarga YOLO yang dikembangkan oleh Ultralytics, menawarkan peningkatan signifikan dalam hal akurasi, kecepatan inferensi, dan kemudahan penggunaan dibandingkan versi-versi sebelumnya (Zhu et al., 2024).
+    </p>
+
+    <p>
+        Beberapa penelitian terbaru telah menunjukkan keberhasilan penggunaan YOLOv8 untuk deteksi sampah laut. Akilandeswari et al. (2024) menggunakan YOLOv8 pada dataset TrashCan dan berhasil mencapai akurasi tinggi dalam mendeteksi berbagai jenis sampah bawah laut. Penelitian lain oleh Kundu (2025) mengintegrasikan Multi-Level CNN dengan YOLOv8 untuk meningkatkan efisiensi deteksi pada dataset Seaclear. Hasil-hasil ini membuktikan bahwa pendekatan <i>deep learning</i> berbasis YOLOv8 sangat potensial untuk diimplementasikan dalam sistem deteksi sampah laut.
+    </p>
+
+    <p>
+        Berdasarkan permasalahan dan peluang tersebut, proyek ini bertujuan untuk membangun sebuah aplikasi web bernama <strong>"OceanGuard"</strong> yang mampu mendeteksi dan mengklasifikasi sampah laut dari gambar atau video menggunakan model YOLOv8. Aplikasi ini diharapkan dapat menjadi alat bantu yang efektif bagi peneliti, lembaga konservasi, dan masyarakat umum dalam upaya monitoring dan penanganan pencemaran sampah di perairan Indonesia.
+    </p>
+
+    <!-- ========================================= -->
+    <!-- 3. RUMUSAN MASALAH -->
+    <!-- ========================================= -->
+    <h2>3. Rumusan Masalah</h2>
+    <ol>
+        <li>Bagaimana membangun model <i>deep learning</i> berbasis YOLOv8 yang mampu mendeteksi dan mengklasifikasi jenis sampah laut dari citra bawah air dengan akurasi tinggi?</li>
+        <li>Bagaimana mengimplementasikan model tersebut ke dalam sebuah aplikasi web yang dapat digunakan oleh pengguna umum untuk mengunggah gambar atau video dan mendapatkan hasil deteksi secara <i>real-time</i>?</li>
+        <li>Bagaimana performa model YOLOv8 dalam mendeteksi berbagai jenis sampah laut pada kondisi lingkungan bawah air yang bervariasi?</li>
+    </ol>
+
+    <!-- ========================================= -->
+    <!-- 4. TUJUAN -->
+    <!-- ========================================= -->
+    <h2>4. Tujuan Proyek</h2>
+    <ol>
+        <li>Mengembangkan model <i>object detection</i> berbasis YOLOv8 yang di-<i>fine-tune</i> menggunakan dataset citra sampah laut untuk mendeteksi dan mengklasifikasi minimal 6 kategori sampah laut (plastik, botol, kaleng, jaring, kantong plastik, dan styrofoam).</li>
+        <li>Membangun aplikasi web interaktif yang memungkinkan pengguna mengunggah gambar atau video dan mendapatkan hasil deteksi berupa <i>bounding box</i>, label kelas, dan <i>confidence score</i>.</li>
+        <li>Mengevaluasi performa model menggunakan metrik standar (<i>mAP, Precision, Recall, F1-Score</i>) dan memastikan model dapat berjalan dengan kecepatan inferensi yang memadai untuk aplikasi <i>real-time</i>.</li>
+        <li>Men-<i>deploy</i> aplikasi pada platform <i>hosting</i> gratis agar dapat diakses secara publik.</li>
+    </ol>
+
+    <!-- ========================================= -->
+    <!-- 5. DATASET -->
+    <!-- ========================================= -->
+    <h2>5. Dataset</h2>
+
+    <p>
+        Proyek ini menggunakan dataset yang bersumber dari platform publik yang telah diakui dalam komunitas riset <i>computer vision</i>. Dataset utama yang digunakan adalah <strong>Seaclear Marine Debris Dataset</strong> dan <strong>Trash-ICRA19</strong>, yang merupakan dataset terbesar dan paling komprehensif untuk deteksi sampah bawah laut.
+    </p>
+
+    <h3>5.1 Dataset Utama</h3>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 5%;">No</th>
+                <th style="width: 20%;">Nama Dataset</th>
+                <th style="width: 15%;">Sumber</th>
+                <th style="width: 15%;">Jumlah Gambar</th>
+                <th style="width: 20%;">Anotasi</th>
+                <th style="width: 25%;">Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: center;">1</td>
+                <td>Seaclear Marine Debris Detection and Segmentation</td>
+                <td>Kaggle (TU Delft)</td>
+                <td style="text-align: center;">8,610</td>
+                <td>Bounding Box &amp; Instance Segmentation (40 kategori)</td>
+                <td><a href="https://www.kaggle.com/search?q=seaclear+marine+debris" target="_blank">Cari di Kaggle: "seaclear marine debris"</a></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">2</td>
+                <td>Underwater Trash Detection (Trash-ICRA19)</td>
+                <td>Kaggle (J-EDI)</td>
+                <td style="text-align: center;">5,700</td>
+                <td>Bounding Box</td>
+                <td><a href="https://www.kaggle.com/search?q=underwater+trash+detection" target="_blank">Cari di Kaggle: "underwater trash detection"</a></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">3</td>
+                <td>Marine Debris Detection</td>
+                <td>Roboflow Universe</td>
+                <td style="text-align: center;">Bervariasi</td>
+                <td>Bounding Box (YOLO format, siap pakai)</td>
+                <td><a href="https://universe.roboflow.com/search?q=marine+debris" target="_blank">universe.roboflow.com</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>
+        <strong>Catatan:</strong> Dataset dapat diakses melalui link pencarian di atas. Untuk Roboflow Universe, dataset sudah tersedia dalam format YOLO dan dapat langsung diunduh beserta anotasinya. Sumber dataset wajib dicantumkan dalam laporan dan paper akhir.
+    </p>
+
+    <h3>5.2 Kategori Objek Deteksi</h3>
+    <p>
+        Berdasarkan analisis dataset, objek sampah laut yang akan dideteksi dikategorikan ke dalam kelas-kelas berikut:
+    </p>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 5%;">No</th>
+                <th style="width: 25%;">Kategori</th>
+                <th style="width: 35%;">Deskripsi</th>
+                <th style="width: 35%;">Contoh Objek</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: center;">1</td>
+                <td>Plastik (<i>Plastic</i>)</td>
+                <td>Potongan plastik, kemasan makanan, bungkus</td>
+                <td>Bungkus snack, plastik wrap, potongan plastik</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">2</td>
+                <td>Botol (<i>Bottle</i>)</td>
+                <td>Botol plastik dan kaca</td>
+                <td>Botol air mineral, botol soda, botol kaca</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">3</td>
+                <td>Kaleng (<i>Can</i>)</td>
+                <td>Kaleng logam</td>
+                <td>Kaleng minuman, kaleng makanan</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">4</td>
+                <td>Jaring (<i>Net/Rope</i>)</td>
+                <td>Jaring ikan, tali, fishing line</td>
+                <td>Jaring ikan bekas, tali tambang, senar</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">5</td>
+                <td>Kantong Plastik (<i>Bag</i>)</td>
+                <td>Kantong plastik / tas plastik</td>
+                <td>Kresek, kantong belanja, tas plastik</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">6</td>
+                <td>Lainnya (<i>Others</i>)</td>
+                <td>Styrofoam, karet, kain, dan material lainnya</td>
+                <td>Styrofoam box, sandal, ban, kain</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>5.3 Pembagian Dataset</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Subset</th>
+                <th>Proporsi</th>
+                <th>Jumlah (Estimasi)</th>
+                <th>Kegunaan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><i>Training Set</i></td>
+                <td style="text-align: center;">70%</td>
+                <td style="text-align: center;">~5,048</td>
+                <td>Melatih model YOLOv8</td>
+            </tr>
+            <tr>
+                <td><i>Validation Set</i></td>
+                <td style="text-align: center;">15%</td>
+                <td style="text-align: center;">~1,082</td>
+                <td>Validasi selama pelatihan untuk menghindari <i>overfitting</i></td>
+            </tr>
+            <tr>
+                <td><i>Test Set</i></td>
+                <td style="text-align: center;">15%</td>
+                <td style="text-align: center;">~1,082</td>
+                <td>Evaluasi akhir performa model</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ========================================= -->
+    <!-- 6. METODE -->
+    <!-- ========================================= -->
+    <h2>6. Metode yang Digunakan</h2>
+
+    <p>
+        Proyek ini menggunakan metode <i>object detection</i> berbasis <i>deep learning</i> dengan arsitektur <strong>YOLOv8</strong> (<i>You Only Look Once version 8</i>) yang dikembangkan oleh Ultralytics. YOLOv8 merupakan model <i>state-of-the-art</i> yang menggabungkan kecepatan inferensi tinggi dengan akurasi deteksi yang sangat baik, sehingga sangat cocok untuk aplikasi deteksi sampah laut secara <i>real-time</i>.
+    </p>
+
+    <h3>6.1 Arsitektur YOLOv8</h3>
+    <p>
+        Arsitektur YOLOv8 terdiri dari tiga komponen utama:
+    </p>
+    <ol>
+        <li><strong>Backbone (CSPDarknet53):</strong> Bertanggung jawab untuk mengekstraksi fitur dari citra input. Menggunakan arsitektur CSPDarknet53 yang telah dioptimalkan dengan <i>Cross Stage Partial</i> connections untuk mengurangi komputasi redundan sambil mempertahankan kemampuan representasi fitur yang kuat.</li>
+        <li><strong>Neck (PANet — Path Aggregation Network):</strong> Menggabungkan fitur dari berbagai skala resolusi (<i>multi-scale feature fusion</i>) menggunakan <i>Feature Pyramid Network</i> (FPN) dan <i>Path Aggregation Network</i> (PAN) untuk meningkatkan kemampuan deteksi objek pada berbagai ukuran.</li>
+        <li><strong>Head (Decoupled Head):</strong> Melakukan prediksi akhir berupa lokasi <i>bounding box</i>, kelas objek, dan <i>confidence score</i>. YOLOv8 menggunakan <i>anchor-free detection head</i> yang lebih efisien dan akurat dibandingkan pendekatan berbasis <i>anchor</i> pada versi sebelumnya.</li>
+    </ol>
+
+    <div class="figure">
+        <img src="images/metode-yolov8.png" alt="Diagram alur metode YOLOv8">
+        <p class="figure-caption">Gambar 1. Diagram alur metode deteksi menggunakan YOLOv8</p>
+    </div>
+
+    <h3>6.2 Tahapan Metode</h3>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 5%;">No</th>
+                <th style="width: 22%;">Tahapan</th>
+                <th style="width: 40%;">Deskripsi</th>
+                <th style="width: 33%;">Tools/Library</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: center;">1</td>
+                <td><i>Data Collection</i></td>
+                <td>Mengumpulkan dataset citra sampah bawah laut dari sumber publik (Kaggle, Roboflow)</td>
+                <td>Kaggle API, Roboflow API</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">2</td>
+                <td><i>Data Preprocessing</i></td>
+                <td>Resize gambar (640×640), normalisasi, konversi format anotasi ke YOLO format</td>
+                <td>OpenCV, Python PIL</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">3</td>
+                <td><i>Data Augmentation</i></td>
+                <td>Menambah variasi data menggunakan teknik: rotasi, flipping, perubahan brightness/contrast, mosaic augmentation</td>
+                <td>Albumentations, Ultralytics built-in augmentation</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">4</td>
+                <td><i>Model Training</i></td>
+                <td>Fine-tuning YOLOv8 pretrained model (COCO) pada dataset sampah laut menggunakan <i>transfer learning</i></td>
+                <td>Ultralytics YOLOv8, PyTorch, Google Colab GPU</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">5</td>
+                <td><i>Model Evaluation</i></td>
+                <td>Evaluasi performa menggunakan metrik: mAP@50, mAP@50:95, Precision, Recall, F1-Score</td>
+                <td>Ultralytics validation, matplotlib</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">6</td>
+                <td><i>Model Optimization</i></td>
+                <td>Optimasi model dengan hyperparameter tuning, model pruning, dan export ke format ONNX untuk inferensi lebih cepat</td>
+                <td>Ultralytics export, ONNX Runtime</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">7</td>
+                <td><i>Deployment</i></td>
+                <td>Integrasi model ke dalam backend API dan deploy ke platform hosting gratis</td>
+                <td>FastAPI, Next.js, Vercel, Railway</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>6.3 Hyperparameter Training</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Nilai</th>
+                <th>Keterangan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Model</td>
+                <td>YOLOv8n / YOLOv8s</td>
+                <td>Nano/Small variant untuk keseimbangan akurasi dan kecepatan</td>
+            </tr>
+            <tr>
+                <td>Input Size</td>
+                <td>640 × 640 piksel</td>
+                <td>Ukuran standar input YOLOv8</td>
+            </tr>
+            <tr>
+                <td>Epochs</td>
+                <td>100 – 200</td>
+                <td>Dengan <i>early stopping</i> (patience=20)</td>
+            </tr>
+            <tr>
+                <td>Batch Size</td>
+                <td>16</td>
+                <td>Disesuaikan dengan kapasitas GPU</td>
+            </tr>
+            <tr>
+                <td>Learning Rate</td>
+                <td>0.01 (initial)</td>
+                <td>Menggunakan <i>cosine annealing scheduler</i></td>
+            </tr>
+            <tr>
+                <td>Optimizer</td>
+                <td>AdamW</td>
+                <td>Optimizer default YOLOv8</td>
+            </tr>
+            <tr>
+                <td>Pretrained Weights</td>
+                <td>COCO (yolov8n.pt / yolov8s.pt)</td>
+                <td><i>Transfer learning</i> dari model yang sudah dilatih pada COCO dataset</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ========================================= -->
+    <!-- 7. ARSITEKTUR SISTEM -->
+    <!-- ========================================= -->
+    <h2>7. Arsitektur Sistem</h2>
+    
+    <p>
+        Aplikasi OceanGuard dibangun dengan arsitektur <i>client-server</i> yang terdiri dari tiga komponen utama: <i>frontend</i> (Next.js), <i>backend</i> (FastAPI), dan <i>machine learning model</i> (YOLOv8). Berikut adalah gambaran arsitektur sistem secara keseluruhan:
+    </p>
+
+    <div class="figure">
+        <img src="images/arsitektur-sistem.png" alt="Arsitektur sistem OceanGuard">
+        <p class="figure-caption">Gambar 2. Arsitektur sistem aplikasi OceanGuard</p>
+    </div>
+
+    <h3>7.1 Tech Stack</h3>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 20%;">Komponen</th>
+                <th style="width: 25%;">Teknologi</th>
+                <th style="width: 55%;">Alasan Pemilihan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><i>ML Model</i></td>
+                <td>YOLOv8 (Ultralytics)</td>
+                <td><i>State-of-the-art</i> object detection dengan inferensi cepat dan akurasi tinggi</td>
+            </tr>
+            <tr>
+                <td><i>Backend API</i></td>
+                <td>FastAPI (Python)</td>
+                <td>Framework asynchronous yang cepat, auto-generate API documentation (Swagger), dan kompatibel dengan library ML Python</td>
+            </tr>
+            <tr>
+                <td><i>Frontend</i></td>
+                <td>Next.js (React)</td>
+                <td>Framework modern dengan SSR (<i>Server-Side Rendering</i>), optimasi performa bawaan, dan ekosistem yang luas</td>
+            </tr>
+            <tr>
+                <td><i>Styling</i></td>
+                <td>Tailwind CSS</td>
+                <td>Utility-first CSS framework untuk desain responsif dan modern</td>
+            </tr>
+            <tr>
+                <td><i>Deployment Frontend</i></td>
+                <td>Vercel</td>
+                <td>Platform hosting gratis untuk Next.js dengan CDN global</td>
+            </tr>
+            <tr>
+                <td><i>Deployment Backend</i></td>
+                <td>Railway / Render</td>
+                <td>Platform hosting gratis yang mendukung Python dan Docker</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>7.2 Alur Kerja Aplikasi</h3>
+    <ol>
+        <li><strong>Input:</strong> Pengguna mengunggah gambar atau video melalui antarmuka web (Next.js frontend).</li>
+        <li><strong>Request:</strong> Frontend mengirimkan file gambar/video ke backend API melalui HTTP POST request.</li>
+        <li><strong>Processing:</strong> Backend menerima file, melakukan preprocessing, dan menjalankan inferensi menggunakan model YOLOv8.</li>
+        <li><strong>Detection:</strong> Model menghasilkan prediksi berupa <i>bounding box</i>, label kelas, dan <i>confidence score</i> untuk setiap objek sampah yang terdeteksi.</li>
+        <li><strong>Response:</strong> Backend mengembalikan hasil deteksi (gambar dengan anotasi + data JSON) ke frontend.</li>
+        <li><strong>Visualization:</strong> Frontend menampilkan hasil deteksi secara visual dengan <i>bounding box</i> berwarna, label kelas, statistik deteksi, dan grafik distribusi jenis sampah.</li>
+    </ol>
+
+    <!-- ========================================= -->
+    <!-- 8. PEMBAGIAN TUGAS -->
+    <!-- ========================================= -->
+    <h2>8. Pembagian Tugas Anggota</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 5%;">No</th>
+                <th style="width: 18%;">Nama Anggota</th>
+                <th style="width: 10%;">NIM</th>
+                <th style="width: 18%;">Peran</th>
+                <th style="width: 49%;">Tugas &amp; Tanggung Jawab</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: center;">1</td>
+                <td><strong>[Nama Anggota 1]</strong></td>
+                <td>[NIM]</td>
+                <td>Data &amp; ML Engineer</td>
+                <td>
+                    <ul style="margin-left: 15px;">
+                        <li>Pengumpulan dan kurasi dataset</li>
+                        <li>Preprocessing dan augmentasi data</li>
+                        <li>Training dan fine-tuning model YOLOv8</li>
+                        <li>Evaluasi dan optimasi performa model</li>
+                        <li>Dokumentasi eksperimen dan hasil</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">2</td>
+                <td><strong>[Nama Anggota 2]</strong></td>
+                <td>[NIM]</td>
+                <td>Backend Developer</td>
+                <td>
+                    <ul style="margin-left: 15px;">
+                        <li>Membangun REST API menggunakan FastAPI</li>
+                        <li>Integrasi model YOLOv8 ke dalam API</li>
+                        <li>Implementasi fitur upload gambar/video</li>
+                        <li>Deployment backend ke Railway/Render</li>
+                        <li>Pengujian API (<i>endpoint testing</i>)</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">3</td>
+                <td><strong>[Nama Anggota 3]</strong></td>
+                <td>[NIM]</td>
+                <td>Frontend Developer</td>
+                <td>
+                    <ul style="margin-left: 15px;">
+                        <li>Desain UI/UX aplikasi web</li>
+                        <li>Pengembangan frontend menggunakan Next.js</li>
+                        <li>Implementasi visualisasi hasil deteksi</li>
+                        <li>Integrasi frontend dengan backend API</li>
+                        <li>Deployment frontend ke Vercel</li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>
+        <strong>Catatan:</strong> Seluruh anggota kelompok bertanggung jawab secara kolektif terhadap penulisan laporan jurnal, pembuatan presentasi, dan memahami keseluruhan sistem. Pembagian tugas bersifat fleksibel dan dapat disesuaikan sesuai kebutuhan.
+    </p>
+
+    <!-- ========================================= -->
+    <!-- 9. TIMELINE -->
+    <!-- ========================================= -->
+    <h2>9. Timeline Proyek</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 5%;">No</th>
+                <th style="width: 15%;">Minggu ke-</th>
+                <th style="width: 12%;">Tanggal</th>
+                <th style="width: 18%;">Fase</th>
+                <th style="width: 50%;">Deliverables</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: center;">1</td>
+                <td style="text-align: center;">Minggu 11</td>
+                <td style="text-align: center;">23 Mei 2026</td>
+                <td>Proposal &amp; Dataset</td>
+                <td>
+                    <ul style="margin-left: 15px;">
+                        <li>Judul proyek, latar belakang</li>
+                        <li>Link dataset</li>
+                        <li>Metode yang digunakan</li>
+                        <li>Pembagian tugas anggota</li>
+                        <li>Target jurnal</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">2</td>
+                <td style="text-align: center;">Minggu 12</td>
+                <td style="text-align: center;">29 Mei 2026</td>
+                <td>Progress Model &amp; Simulasi</td>
+                <td>
+                    <ul style="margin-left: 15px;">
+                        <li>Progress preprocessing dataset</li>
+                        <li>Hasil training model awal</li>
+                        <li>Tampilan aplikasi awal (wireframe/prototype)</li>
+                        <li>Kendala teknis yang dihadapi</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">3</td>
+                <td style="text-align: center;">Minggu 13</td>
+                <td style="text-align: center;">4 Juni 2026</td>
+                <td>Finalisasi Sistem</td>
+                <td>
+                    <ul style="margin-left: 15px;">
+                        <li>Hasil evaluasi model (mAP, Precision, Recall)</li>
+                        <li>Pengujian sistem end-to-end</li>
+                        <li>Tampilan final aplikasi (deployed)</li>
+                        <li>Draft paper jurnal</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">4</td>
+                <td style="text-align: center;">Minggu 14–15</td>
+                <td style="text-align: center;">11 &amp; 18 Juni 2026</td>
+                <td>Presentasi Proyek</td>
+                <td>
+                    <ul style="margin-left: 15px;">
+                        <li>Slide presentasi (PPT/PDF)</li>
+                        <li>Demo aplikasi secara langsung</li>
+                        <li>Paper jurnal final</li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ========================================= -->
+    <!-- 10. TARGET JURNAL -->
+    <!-- ========================================= -->
+    <h2>10. Target Jurnal</h2>
+
+    <p>
+        Laporan akhir proyek ini akan disusun mengikuti template jurnal nasional terakreditasi. Berikut adalah target jurnal yang dipertimbangkan:
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 5%;">No</th>
+                <th style="width: 28%;">Nama Jurnal</th>
+                <th style="width: 22%;">Penerbit</th>
+                <th style="width: 15%;">Akreditasi</th>
+                <th style="width: 15%;">Biaya</th>
+                <th style="width: 15%;">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: center;">1</td>
+                <td><strong>JTIIK</strong> (Jurnal Teknologi Informasi dan Ilmu Komputer)</td>
+                <td>Universitas Brawijaya</td>
+                <td style="text-align: center;">SINTA 2</td>
+                <td style="text-align: center;">Gratis</td>
+                <td style="text-align: center; color: green;"><strong>Target Utama</strong></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">2</td>
+                <td><strong>JUTI</strong> (Jurnal Ilmiah Teknologi Informasi)</td>
+                <td>ITS Surabaya</td>
+                <td style="text-align: center;">SINTA 2</td>
+                <td style="text-align: center;">Gratis</td>
+                <td style="text-align: center;">Alternatif 1</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">3</td>
+                <td><strong>JSI</strong> (Jurnal Sistem Informasi)</td>
+                <td>Universitas Indonesia</td>
+                <td style="text-align: center;">SINTA 2</td>
+                <td style="text-align: center;">Gratis</td>
+                <td style="text-align: center;">Alternatif 2</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>
+        Target utama adalah <strong>JTIIK (Jurnal Teknologi Informasi dan Ilmu Komputer)</strong> dari Universitas Brawijaya karena relevansi topik yang tinggi dengan scope jurnal, akreditasi SINTA 2, dan kebijakan publikasi gratis.
+    </p>
+
+    <!-- ========================================= -->
+    <!-- 11. REFERENSI -->
+    <!-- ========================================= -->
+    <h2>11. Referensi</h2>
+
+    <div class="references">
+        <p>[1] Akilandeswari, A., et al. (2024). "Deep Learning Framework for Underwater Trash Detection using YOLOv8." <i>International Journal of Advanced Research</i>. Retrieved from Scribd.</p>
+        
+        <p>[2] Zhu, X., et al. (2024). "YOLOv8-C2f-Faster-EMA: An Improved Underwater Trash Detection Model." <i>MDPI Sensors</i>, 24(x). DOI: 10.3390/sXXXXXXXX.</p>
+        
+        <p>[3] Kundu, S. (2025). "MLH-CNN Integrated YOLOv8 for Efficient Marine Debris Detection." <i>Master's Thesis</i>, National College of Ireland.</p>
+
+        <p>[4] Hong, J., et al. (2020). "TrashCan: A Semantically-Segmented Dataset towards Visual Detection of Marine Debris." <i>arXiv preprint</i> arXiv:2007.08097.</p>
+
+        <p>[5] Fulton, M., et al. (2019). "Trash-ICRA19: A Bounding Box Labeled Dataset of Underwater Trash." <i>IEEE International Conference on Robotics and Automation (ICRA)</i>.</p>
+        
+        <p>[6] Jocher, G., Chaurasia, A., & Qiu, J. (2023). "Ultralytics YOLOv8." <i>Ultralytics</i>. Available at: <a href="https://github.com/ultralytics/ultralytics" target="_blank">https://github.com/ultralytics/ultralytics</a>.</p>
+
+        <p>[7] Kementerian Lingkungan Hidup dan Kehutanan. (2023). "Statistik Pengelolaan Sampah Nasional." <i>KLHK</i>. Available at: <a href="https://sipsn.menlhk.go.id/" target="_blank">https://sipsn.menlhk.go.id/</a>.</p>
+
+        <p>[8] Redmon, J., et al. (2016). "You Only Look Once: Unified, Real-Time Object Detection." <i>Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)</i>, pp. 779-788.</p>
+    </div>
+
+    <hr>
+    <p class="no-indent" style="text-align: center; font-size: 10pt; color: #666; margin-top: 20px;">
+        <i>Dokumen ini merupakan Progress Report Minggu 11 untuk mata kuliah Pengolahan Citra Digital.<br>
+        Harap lengkapi bagian yang ditandai dengan [...] sebelum pengumpulan.</i>
+    </p>
+
+</body>
+</html>

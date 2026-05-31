@@ -1,0 +1,57 @@
+# ===== Dependencies =====
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+node_modules/
+
+# ===== Environment =====
+.env
+.env.local
+.env.production
+.venv/
+venv/
+env/
+
+# ===== Dataset (too large for git) =====
+model/data/raw/
+model/data/train/
+model/data/val/
+model/data/test/
+model/data/*.yaml
+!model/data/.gitkeep
+
+# ===== Model Weights (too large for git) =====
+model/weights/*.pt
+model/weights/*.onnx
+!model/weights/.gitkeep
+
+# ===== Training Runs =====
+model/runs/
+model/evaluation/
+
+# ===== IDE =====
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== Misc =====
+*.log
+*.tmp
+*.bak
+
+# ===== Next.js =====
+frontend/.next/
+frontend/out/
+frontend/node_modules/

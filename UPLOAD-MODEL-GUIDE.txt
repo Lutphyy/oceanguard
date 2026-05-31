@@ -1,0 +1,187 @@
+═══════════════════════════════════════════════════════════════
+📦 CARA UPLOAD MODEL KE DEPLOYMENT
+═══════════════════════════════════════════════════════════════
+
+Ada 2 cara untuk deploy model ke server:
+
+CARA 1: Google Drive (RECOMMENDED - MUDAH) ⭐
+CARA 2: Railway Volume (Advanced)
+
+═══════════════════════════════════════════════════════════════
+🌐 CARA 1: GOOGLE DRIVE (RECOMMENDED)
+═══════════════════════════════════════════════════════════════
+
+Model akan di-download otomatis dari Google Drive saat backend start.
+
+STEP 1: UPLOAD MODEL KE GOOGLE DRIVE
+───────────────────────────────────────────────────────────────
+1. Buka Google Drive: https://drive.google.com/
+2. Upload file: model/weights/best.pt (5.6 MB)
+3. Klik kanan file → Share → Change to "Anyone with the link"
+4. Copy link (contoh: https://drive.google.com/file/d/1ABC...XYZ/view)
+
+STEP 2: DAPATKAN FILE ID
+───────────────────────────────────────────────────────────────
+Dari link: https://drive.google.com/file/d/1ABC...XYZ/view
+File ID adalah: 1ABC...XYZ (bagian antara /d/ dan /view)
+
+Contoh:
+Link: https://drive.google.com/file/d/1a2b3c4d5e6f7g8h9i0j/view
+File ID: 1a2b3c4d5e6f7g8h9i0j
+
+STEP 3: SET ENVIRONMENT VARIABLE DI RAILWAY
+───────────────────────────────────────────────────────────────
+1. Buka Railway Dashboard
+2. Pilih project oceanguard-backend
+3. Klik tab "Variables"
+4. Tambahkan variable baru:
+   
+   Name: MODEL_DRIVE_ID
+   Value: [PASTE FILE ID DI SINI]
+   
+   Contoh: 1a2b3c4d5e6f7g8h9i0j
+
+5. Save
+6. Railway akan otomatis redeploy
+
+STEP 4: VERIFY
+───────────────────────────────────────────────────────────────
+1. Tunggu deploy selesai (2-3 menit)
+2. Check Railway logs:
+   - Dashboard → Deployments → View Logs
+   - Harusnya muncul: "✅ Model downloaded to: ..."
+3. Test detection di frontend
+4. Harusnya sekarang deteksi REAL (bukan demo mode)!
+
+═══════════════════════════════════════════════════════════════
+💾 CARA 2: RAILWAY VOLUME (ADVANCED)
+═══════════════════════════════════════════════════════════════
+
+Upload model langsung ke Railway storage.
+
+STEP 1: CREATE VOLUME
+───────────────────────────────────────────────────────────────
+1. Railway Dashboard → Project
+2. Klik tab "Settings"
+3. Scroll ke "Volumes"
+4. Klik "New Volume"
+5. Mount Path: /app/model/weights
+6. Save
+
+STEP 2: UPLOAD MODEL
+───────────────────────────────────────────────────────────────
+Gunakan Railway CLI:
+
+1. Install Railway CLI:
+   npm install -g @railway/cli
+
+2. Login:
+   railway login
+
+3. Link project:
+   railway link
+
+4. Upload file:
+   railway volume upload /app/model/weights model/weights/best.pt
+
+STEP 3: REDEPLOY
+───────────────────────────────────────────────────────────────
+Railway akan otomatis redeploy setelah volume attached.
+
+═══════════════════════════════════════════════════════════════
+🔍 TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════
+
+❌ Error: "Failed to download model"
+───────────────────────────────────────────────────────────────
+✅ Pastikan Google Drive link adalah "Anyone with the link"
+✅ Pastikan FILE ID benar (copy dari URL)
+✅ Check Railway logs untuk error detail
+
+❌ Backend masih demo mode
+───────────────────────────────────────────────────────────────
+✅ Check environment variable MODEL_DRIVE_ID sudah set
+✅ Check Railway logs: harusnya ada "📥 Downloading model..."
+✅ Redeploy backend setelah set env variable
+
+❌ Model download lambat
+───────────────────────────────────────────────────────────────
+✅ NORMAL! File 5.6 MB perlu waktu 10-30 detik
+✅ Tunggu saja, check logs untuk progress
+
+❌ Error: "Model file corrupted"
+───────────────────────────────────────────────────────────────
+✅ Re-upload model ke Google Drive
+✅ Pastikan file best.pt tidak corrupt (test di lokal dulu)
+✅ Redeploy backend
+
+═══════════════════════════════════════════════════════════════
+📊 PERBANDINGAN CARA 1 vs CARA 2
+═══════════════════════════════════════════════════════════════
+
+CARA 1: GOOGLE DRIVE
+✅ Mudah (tidak perlu CLI)
+✅ Gratis unlimited storage
+✅ Model di-download setiap kali backend restart
+⚠️ Startup sedikit lebih lama (10-30 detik)
+⚠️ Perlu internet untuk download
+
+CARA 2: RAILWAY VOLUME
+✅ Model persistent (tidak perlu download ulang)
+✅ Startup lebih cepat
+⚠️ Perlu Railway CLI
+⚠️ Volume storage terbatas (gratis: 1GB)
+
+REKOMENDASI: Pakai CARA 1 (Google Drive) untuk project kuliah!
+
+═══════════════════════════════════════════════════════════════
+✅ CHECKLIST
+═══════════════════════════════════════════════════════════════
+
+SEBELUM DEPLOY:
+[ ] Model best.pt ada di model/weights/
+[ ] Model sudah di-test di lokal (berfungsi)
+[ ] File download_model.py sudah ada di backend/
+
+SETELAH DEPLOY:
+[ ] Model di-upload ke Google Drive
+[ ] Google Drive link set to "Anyone with the link"
+[ ] File ID sudah di-copy
+[ ] Environment variable MODEL_DRIVE_ID sudah di-set di Railway
+[ ] Backend sudah redeploy
+[ ] Check Railway logs: model downloaded successfully
+[ ] Test detection di frontend: hasil REAL (bukan demo)
+
+═══════════════════════════════════════════════════════════════
+📝 CATATAN PENTING
+═══════════════════════════════════════════════════════════════
+
+1. Model best.pt (5.6 MB) TIDAK akan ter-push ke GitHub
+   - Sudah di-block oleh .gitignore
+   - Ini NORMAL dan BENAR (file terlalu besar untuk Git)
+
+2. Backend BISA jalan tanpa model (demo mode)
+   - Return sample data
+   - Bagus untuk test deployment
+   - Tapi untuk production, perlu model real
+
+3. Model di-download SEKALI saat backend start
+   - Disimpan di /app/model/weights/best.pt
+   - Tidak perlu download ulang kecuali backend restart
+
+4. Jika Railway restart (setiap ~24 jam atau saat redeploy)
+   - Model akan di-download ulang otomatis
+   - Startup sedikit lebih lama (10-30 detik)
+   - Setelah itu normal
+
+═══════════════════════════════════════════════════════════════
+🎉 SELESAI!
+═══════════════════════════════════════════════════════════════
+
+Setelah ikuti panduan ini, aplikasi kamu akan:
+✅ Deploy dengan model REAL
+✅ Deteksi sampah laut dengan akurat
+✅ Confidence threshold berfungsi
+✅ Siap untuk demo ke dosen!
+
+═══════════════════════════════════════════════════════════════

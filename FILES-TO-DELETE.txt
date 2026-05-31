@@ -1,0 +1,157 @@
+═══════════════════════════════════════════════════════════════
+📁 FILE YANG BISA DIHAPUS SEBELUM DEPLOY
+═══════════════════════════════════════════════════════════════
+
+✅ = AMAN DIHAPUS (tidak perlu untuk deployment)
+⚠️ = OPSIONAL (tergantung kebutuhan)
+❌ = JANGAN DIHAPUS (penting untuk aplikasi)
+
+═══════════════════════════════════════════════════════════════
+ROOT DIRECTORY
+═══════════════════════════════════════════════════════════════
+
+✅ yolo26n.pt                    (file model salah nama, tidak dipakai)
+✅ yolov8n.pt                    (pretrained model, tidak dipakai)
+⚠️ TESTING-CONFIDENCE-THRESHOLD.md  (dokumentasi testing)
+⚠️ DEPLOYMENT-QUICK-START.txt   (sudah ada DEPLOYMENT-STEPS.md)
+⚠️ Panduan Proyek Mata Kuliah.pdf  (dokumentasi kuliah)
+
+❌ .gitignore                    (PENTING - agar file besar tidak ke-push)
+❌ README.md                     (dokumentasi project)
+
+═══════════════════════════════════════════════════════════════
+FOLDER: docs/
+═══════════════════════════════════════════════════════════════
+
+⚠️ docs/progress-report-minggu11.html  (laporan mingguan)
+⚠️ docs/penjelasan-5w1h.html          (dokumentasi kuliah)
+⚠️ docs/images/                        (gambar dokumentasi)
+
+❌ docs/laporan-training-evaluasi-model.html  (PENTING - laporan hasil training)
+❌ docs/DEPLOYMENT-GUIDE.html                 (PENTING - panduan deployment)
+
+CATATAN: Folder docs/ tidak akan ter-deploy ke server (hanya lokal)
+
+═══════════════════════════════════════════════════════════════
+FOLDER: model/
+═══════════════════════════════════════════════════════════════
+
+✅ model/runs/                   (hasil training - SANGAT BESAR, sudah backup)
+✅ model/data/                   (dataset - SANGAT BESAR, tidak perlu di server)
+✅ model/notebooks/              (jupyter notebooks - tidak perlu di server)
+✅ model/scripts/                (script training - tidak perlu di server)
+⚠️ model/check_class_order.py   (utility script)
+⚠️ model/download_all_results.py (utility script)
+⚠️ model/roboflow_colab_training.ipynb  (notebook training)
+⚠️ model/oceanguard_colab_training.ipynb (notebook training)
+
+❌ model/weights/best.pt         (PENTING - model utama, tapi tidak akan ter-push karena .gitignore)
+❌ model/requirements.txt        (dependencies)
+❌ model/README.md               (dokumentasi)
+
+CATATAN: 
+- model/weights/best.pt tidak akan ter-push (sudah di .gitignore)
+- Backend akan jalan dalam demo mode tanpa model
+- Untuk production, upload model ke Google Drive atau Railway Volume
+
+═══════════════════════════════════════════════════════════════
+FOLDER: frontend/
+═══════════════════════════════════════════════════════════════
+
+✅ frontend/.next/               (build output - akan di-build ulang di Vercel)
+✅ frontend/node_modules/        (dependencies - akan di-install ulang)
+⚠️ frontend/AGENTS.md            (dokumentasi development)
+⚠️ frontend/CLAUDE.md            (dokumentasi development)
+⚠️ frontend/CHANGELOG.md         (changelog - bagus untuk dokumentasi)
+
+❌ frontend/package.json         (PENTING - dependencies list)
+❌ frontend/package-lock.json    (PENTING - lock dependencies version)
+❌ frontend/next.config.mjs      (PENTING - Next.js config)
+❌ frontend/app/                 (PENTING - source code)
+❌ frontend/public/              (PENTING - static assets)
+
+CATATAN: .next/ dan node_modules/ sudah di .gitignore
+
+═══════════════════════════════════════════════════════════════
+FOLDER: backend/
+═══════════════════════════════════════════════════════════════
+
+✅ backend/__pycache__/          (Python cache - akan di-generate ulang)
+
+❌ backend/app/                  (PENTING - source code)
+❌ backend/requirements.txt      (PENTING - dependencies)
+❌ backend/Dockerfile            (PENTING - untuk Docker deployment)
+❌ backend/Procfile              (PENTING - untuk Railway)
+❌ backend/runtime.txt           (PENTING - Python version)
+❌ backend/.gitignore            (PENTING - ignore cache files)
+
+═══════════════════════════════════════════════════════════════
+FOLDER: .vscode/
+═══════════════════════════════════════════════════════════════
+
+⚠️ .vscode/settings.json         (VS Code settings - tidak perlu di server)
+
+CATATAN: Folder .vscode/ tidak akan ter-deploy (sudah di .gitignore)
+
+═══════════════════════════════════════════════════════════════
+📊 ESTIMASI UKURAN FILE
+═══════════════════════════════════════════════════════════════
+
+SEBELUM HAPUS:
+- model/runs/          ~500 MB - 1 GB
+- model/data/          ~200 MB - 500 MB
+- model/weights/*.pt   ~5-10 MB
+- frontend/node_modules/  ~300 MB
+- frontend/.next/      ~50 MB
+- yolo*.pt (root)      ~10 MB
+TOTAL: ~1-2 GB
+
+SETELAH HAPUS (yang akan ke-push ke GitHub):
+- Source code          ~5 MB
+- Docs                 ~2 MB
+- Config files         ~1 MB
+TOTAL: ~10 MB
+
+═══════════════════════════════════════════════════════════════
+🗑️ COMMAND UNTUK HAPUS FILE BESAR
+═══════════════════════════════════════════════════════════════
+
+WINDOWS (Command Prompt):
+
+cd "c:\Users\NITRO\Documents\Kuliah\Semester6\Pengelolaan Citra"
+
+rem Hapus file model di root
+del yolo26n.pt
+del yolov8n.pt
+
+rem Hapus folder besar (HATI-HATI!)
+rmdir /s /q model\runs
+rmdir /s /q model\data
+rmdir /s /q model\notebooks
+rmdir /s /q model\scripts
+
+rem Hapus build folders (akan di-generate ulang)
+rmdir /s /q frontend\.next
+rmdir /s /q frontend\node_modules
+
+CATATAN: 
+- Backup dulu sebelum hapus!
+- model/runs/ sudah di-backup ke Google Drive (sesuai saran sebelumnya)
+- node_modules/ dan .next/ akan di-install/build ulang otomatis
+
+═══════════════════════════════════════════════════════════════
+✅ REKOMENDASI
+═══════════════════════════════════════════════════════════════
+
+UNTUK DEPLOYMENT:
+1. HAPUS: yolo26n.pt, yolov8n.pt (di root)
+2. HAPUS: model/runs/ (sudah backup)
+3. HAPUS: model/data/ (dataset tidak perlu di server)
+4. BIARKAN: Semua file lain (akan di-filter otomatis oleh .gitignore)
+
+UNTUK BACKUP LOKAL:
+1. Backup model/runs/ ke Google Drive (SUDAH DILAKUKAN)
+2. Backup model/weights/best.pt ke Google Drive
+3. Backup model/data/ jika masih perlu (opsional)
+
+═══════════════════════════════════════════════════════════════

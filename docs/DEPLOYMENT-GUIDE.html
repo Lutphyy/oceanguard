@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan Deployment & Improvement - OceanGuard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #0066cc;
+            border-bottom: 3px solid #0066cc;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #0088cc;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 4px solid #0088cc;
+        }
+        h3 {
+            color: #00aacc;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .highlight {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .warning {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .info {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background: #0066cc;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .badge-success { background: #4caf50; color: white; }
+        .badge-warning { background: #ff9800; color: white; }
+        .badge-info { background: #2196f3; color: white; }
+        .badge-danger { background: #f44336; color: white; }
+    </style>
+</head>
+<body>
+
+<h1>🚀 Panduan Deployment & Improvement OceanGuard</h1>
+
+<div class="section">
+    <h2>📊 Analisis Aplikasi Saat Ini</h2>
+    
+    <h3>✅ Yang Sudah Bagus:</h3>
+    <ul>
+        <li><strong>Frontend Modern:</strong> Next.js 14 + Tailwind CSS dengan UI yang menarik</li>
+        <li><strong>Backend Solid:</strong> FastAPI dengan struktur yang rapi</li>
+        <li><strong>Model Excellent:</strong> YOLOv8 dengan mAP 82.8%</li>
+        <li><strong>Fitur Lengkap:</strong> Upload, deteksi, visualisasi, statistik</li>
+        <li><strong>UX Baik:</strong> Drag & drop, loading state, error handling</li>
+    </ul>
+
+    <h3>⚠️ Yang Perlu Improvement:</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Area</th>
+                <th>Issue</th>
+                <th>Priority</th>
+                <th>Impact</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>API URL</strong></td>
+                <td>Hardcoded localhost, tidak bisa deploy</td>
+                <td><span class="badge badge-danger">HIGH</span></td>
+                <td>Blocking deployment</td>
+            </tr>
+            <tr>
+                <td><strong>CORS</strong></td>
+                <td>Belum dikonfigurasi untuk production</td>
+                <td><span class="badge badge-danger">HIGH</span></td>
+                <td>Frontend tidak bisa akses backend</td>
+            </tr>
+            <tr>
+                <td><strong>Environment Variables</strong></td>
+                <td>Belum ada .env file</td>
+                <td><span class="badge badge-warning">MEDIUM</span></td>
+                <td>Sulit manage config</td>
+            </tr>
+            <tr>
+                <td><strong>Model Size</strong></td>
+                <td>best.pt (5.6 MB) perlu dioptimasi</td>
+                <td><span class="badge badge-info">LOW</span></td>
+                <td>Loading time sedikit lambat</td>
+            </tr>
+            <tr>
+                <td><strong>Error Messages</strong></td>
+                <td>Kurang user-friendly</td>
+                <td><span class="badge badge-info">LOW</span></td>
+                <td>UX bisa lebih baik</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h2>🔧 Improvement yang Harus Dilakukan</h2>
+
+    <h3>1. Fix API URL (CRITICAL!)</h3>
+    
+    <div class="warning">
+        <strong>⚠️ MASALAH:</strong> API URL hardcoded ke <code>localhost:8000</code>, tidak bisa diakses setelah deploy!
+    </div>
+
+    <p><strong>Solusi:</strong> Gunakan environment variable</p>
+
+    <p><strong>File: <code>frontend/.env.local</code></strong> (buat file baru)</p>
+    <pre><code># Development
+NEXT_PUBLIC_API_URL=http://localhost:8000
+
+# Production (ganti setelah deploy backend)
+# NEXT_PUBLIC_API_URL=https://your-backend.railway.app</code></pre>
+
+    <p><strong>File: <code>frontend/app/page.js</code></strong> (sudah benar, tidak perlu diubah)</p>
+    <pre><code>const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";</code></pre>
+
+    <h3>2. Fix CORS di Backend (CRITICAL!)</h3>
+
+    <p><strong>File: <code>backend/app/main.py</code></strong></p>
+    <p>Tambahkan CORS middleware:</p>
+    <pre><code>from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI(title="OceanGuard API")
+
+# CORS Configuration
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",  # Development
+        "https://your-frontend.vercel.app",  # Production (ganti setelah deploy)
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)</code></pre>
+
+    <h3>3. Add Environment Variables</h3>
+
+    <p><strong>File: <code>backend/.env</code></strong> (buat file baru)</p>
+    <pre><code># Model Configuration
+MODEL_PATH=../model/weights/best.pt
+CONFIDENCE_THRESHOLD=0.25
+IOU_THRESHOLD=0.45
+
+# API Configuration
+API_HOST=0.0.0.0
+API_PORT=8000</code></pre>
+
+    <h3>4. Update requirements.txt</h3>
+
+    <p><strong>File: <code>backend/requirements.txt</code></strong></p>
+    <p>Pastikan semua dependencies ada:</p>
+    <pre><code>fastapi==0.115.0
+uvicorn[standard]==0.32.0
+python-multipart==0.0.12
+ultralytics==8.3.0
+opencv-python-headless==4.10.0.84
+pillow==11.0.0
+numpy==1.26.4
+python-dotenv==1.0.1</code></pre>
+
+    <div class="info">
+        <strong>💡 TIP:</strong> Gunakan <code>opencv-python-headless</code> untuk server (lebih ringan, tanpa GUI)
+    </div>
+</div>
+
+<div class="section">
+    <h2>🌐 Panduan Hosting (Step-by-Step)</h2>
+
+    <h3>📍 Rekomendasi Platform:</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Component</th>
+                <th>Platform</th>
+                <th>Harga</th>
+                <th>Alasan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Frontend</strong></td>
+                <td>Vercel</td>
+                <td>FREE</td>
+                <td>✅ Auto-deploy dari GitHub<br>✅ CDN global<br>✅ Optimasi Next.js otomatis</td>
+            </tr>
+            <tr>
+                <td><strong>Backend</strong></td>
+                <td>Railway</td>
+                <td>FREE ($5 credit/bulan)</td>
+                <td>✅ Support Python<br>✅ Auto-deploy dari GitHub<br>✅ Easy setup</td>
+            </tr>
+            <tr>
+                <td><strong>Alternative Backend</strong></td>
+                <td>Render</td>
+                <td>FREE</td>
+                <td>✅ Support Python<br>⚠️ Cold start (lambat kalau idle)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>🚀 STEP 1: Deploy Backend ke Railway</h3>
+
+    <h4>A. Persiapan</h4>
+    <ol>
+        <li>Buat akun di <a href="https://railway.app" target="_blank">railway.app</a></li>
+        <li>Login dengan GitHub</li>
+        <li>Push code ke GitHub repository</li>
+    </ol>
+
+    <h4>B. Deploy</h4>
+    <ol>
+        <li>Klik <strong>"New Project"</strong></li>
+        <li>Pilih <strong>"Deploy from GitHub repo"</strong></li>
+        <li>Select repository kamu</li>
+        <li>Railway akan auto-detect Python project</li>
+        <li>Klik <strong>"Deploy"</strong></li>
+    </ol>
+
+    <h4>C. Konfigurasi</h4>
+    <ol>
+        <li>Buka <strong>Settings</strong> → <strong>Environment Variables</strong></li>
+        <li>Tambahkan:
+            <pre><code>PORT=8000
+PYTHON_VERSION=3.10</code></pre>
+        </li>
+        <li>Buka <strong>Settings</strong> → <strong>Networking</strong></li>
+        <li>Generate domain (contoh: <code>oceanguard-backend.railway.app</code>)</li>
+        <li>Copy URL ini!</li>
+    </ol>
+
+    <div class="highlight">
+        <strong>✅ Backend URL:</strong> <code>https://oceanguard-backend.railway.app</code><br>
+        <strong>Test:</strong> Buka <code>https://oceanguard-backend.railway.app/docs</code> (harus muncul Swagger UI)
+    </div>
+
+    <h3>🚀 STEP 2: Deploy Frontend ke Vercel</h3>
+
+    <h4>A. Persiapan</h4>
+    <ol>
+        <li>Update <code>frontend/.env.local</code>:
+            <pre><code>NEXT_PUBLIC_API_URL=https://oceanguard-backend.railway.app</code></pre>
+        </li>
+        <li>Commit & push ke GitHub</li>
+    </ol>
+
+    <h4>B. Deploy</h4>
+    <ol>
+        <li>Buka <a href="https://vercel.com" target="_blank">vercel.com</a></li>
+        <li>Login dengan GitHub</li>
+        <li>Klik <strong>"Add New Project"</strong></li>
+        <li>Import repository kamu</li>
+        <li>Vercel auto-detect Next.js</li>
+        <li>Klik <strong>"Deploy"</strong></li>
+    </ol>
+
+    <h4>C. Konfigurasi Environment Variable</h4>
+    <ol>
+        <li>Buka <strong>Settings</strong> → <strong>Environment Variables</strong></li>
+        <li>Tambahkan:
+            <pre><code>NEXT_PUBLIC_API_URL=https://oceanguard-backend.railway.app</code></pre>
+        </li>
+        <li>Klik <strong>"Save"</strong></li>
+        <li>Redeploy (Settings → Deployments → Redeploy)</li>
+    </ol>
+
+    <div class="highlight">
+        <strong>✅ Frontend URL:</strong> <code>https://oceanguard.vercel.app</code><br>
+        <strong>Test:</strong> Upload gambar dan cek apakah deteksi jalan!
+    </div>
+
+    <h3>🚀 STEP 3: Update CORS di Backend</h3>
+
+    <p>Setelah dapat URL frontend, update <code>backend/app/main.py</code>:</p>
+    <pre><code>allow_origins=[
+    "http://localhost:3000",
+    "https://oceanguard.vercel.app",  # ← Ganti dengan URL kamu!
+]</code></pre>
+
+    <p>Commit, push, dan Railway akan auto-redeploy!</p>
+</div>
+
+<div class="section">
+    <h2>🎨 Improvement Tambahan (Optional)</h2>
+
+    <h3>1. Add Loading Skeleton</h3>
+    <p>Improve UX saat loading:</p>
+    <pre><code>// frontend/app/page.js
+{isLoading && (
+  &lt;div className="animate-pulse space-y-3"&gt;
+    &lt;div className="h-4 bg-slate-700 rounded w-3/4"&gt;&lt;/div&gt;
+    &lt;div className="h-4 bg-slate-700 rounded w-1/2"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+)}</code></pre>
+
+    <h3>2. Add Download Button</h3>
+    <p>Allow user download annotated image:</p>
+    <pre><code>const handleDownload = () => {
+  const link = document.createElement('a');
+  link.href = annotatedImage;
+  link.download = 'oceanguard-detection.jpg';
+  link.click();
+};</code></pre>
+
+    <h3>3. Add Confidence Threshold Slider</h3>
+    <p>Let user adjust confidence threshold:</p>
+    <pre><code>&lt;input 
+  type="range" 
+  min="0.1" 
+  max="0.9" 
+  step="0.05"
+  value={confidenceThreshold}
+  onChange={(e) => setConfidenceThreshold(e.target.value)}
+/&gt;</code></pre>
+
+    <h3>4. Add About Page</h3>
+    <p>Explain project, dataset, model performance:</p>
+    <pre><code>// frontend/app/about/page.js
+export default function About() {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Tentang OceanGuard&lt;/h1&gt;
+      &lt;p&gt;Model: YOLOv8 Nano&lt;/p&gt;
+      &lt;p&gt;mAP@50: 82.8%&lt;/p&gt;
+      &lt;p&gt;Dataset: 2,907 images, 6 classes&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+    <h3>5. Add Analytics (Optional)</h3>
+    <p>Track usage dengan Google Analytics atau Vercel Analytics</p>
+</div>
+
+<div class="section">
+    <h2>✅ Checklist Deployment</h2>
+
+    <h3>Sebelum Deploy:</h3>
+    <ul>
+        <li>☐ best.pt ada di <code>model/weights/</code></li>
+        <li>☐ requirements.txt lengkap</li>
+        <li>☐ .env.local dibuat (frontend)</li>
+        <li>☐ CORS dikonfigurasi (backend)</li>
+        <li>☐ Code di-push ke GitHub</li>
+    </ul>
+
+    <h3>Setelah Deploy Backend:</h3>
+    <ul>
+        <li>☐ Railway deployment success</li>
+        <li>☐ Backend URL didapat</li>
+        <li>☐ Test <code>/docs</code> endpoint</li>
+        <li>☐ Update NEXT_PUBLIC_API_URL di frontend</li>
+    </ul>
+
+    <h3>Setelah Deploy Frontend:</h3>
+    <ul>
+        <li>☐ Vercel deployment success</li>
+        <li>☐ Frontend URL didapat</li>
+        <li>☐ Update CORS di backend dengan frontend URL</li>
+        <li>☐ Test upload & deteksi</li>
+    </ul>
+
+    <h3>Final Testing:</h3>
+    <ul>
+        <li>☐ Upload gambar → Deteksi jalan</li>
+        <li>☐ Annotated image muncul</li>
+        <li>☐ Statistik benar</li>
+        <li>☐ Error handling works</li>
+        <li>☐ Mobile responsive</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2>🚨 Troubleshooting</h2>
+
+    <h3>Problem: CORS Error</h3>
+    <div class="warning">
+        <strong>Error:</strong> <code>Access to fetch at '...' from origin '...' has been blocked by CORS policy</code>
+    </div>
+    <p><strong>Solution:</strong></p>
+    <ol>
+        <li>Check CORS middleware di <code>backend/app/main.py</code></li>
+        <li>Pastikan frontend URL ada di <code>allow_origins</code></li>
+        <li>Redeploy backend</li>
+    </ol>
+
+    <h3>Problem: Model Not Found</h3>
+    <div class="warning">
+        <strong>Error:</strong> <code>FileNotFoundError: model/weights/best.pt</code>
+    </div>
+    <p><strong>Solution:</strong></p>
+    <ol>
+        <li>Pastikan <code>best.pt</code> ada di repository</li>
+        <li>Check .gitignore (jangan ignore *.pt)</li>
+        <li>Push ulang ke GitHub</li>
+    </ol>
+
+    <h3>Problem: Railway Out of Memory</h3>
+    <div class="warning">
+        <strong>Error:</strong> <code>Killed (OOM)</code>
+    </div>
+    <p><strong>Solution:</strong></p>
+    <ol>
+        <li>Gunakan YOLOv8 Nano (bukan Small/Medium)</li>
+        <li>Reduce batch size di inference</li>
+        <li>Upgrade Railway plan (kalau perlu)</li>
+    </ol>
+</div>
+
+<div class="section">
+    <h2>📊 Estimasi Biaya</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Platform</th>
+                <th>Free Tier</th>
+                <th>Limitations</th>
+                <th>Paid Plan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Vercel (Frontend)</strong></td>
+                <td>FREE</td>
+                <td>100 GB bandwidth/bulan<br>Unlimited deployments</td>
+                <td>$20/bulan (Pro)</td>
+            </tr>
+            <tr>
+                <td><strong>Railway (Backend)</strong></td>
+                <td>$5 credit/bulan</td>
+                <td>~500 jam runtime<br>512 MB RAM</td>
+                <td>$5/bulan (pay as you go)</td>
+            </tr>
+            <tr>
+                <td><strong>Render (Alternative)</strong></td>
+                <td>FREE</td>
+                <td>Cold start (15 detik)<br>750 jam/bulan</td>
+                <td>$7/bulan (Starter)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="highlight">
+        <strong>💰 Total Biaya:</strong> <strong>$0/bulan</strong> (dengan free tier)<br>
+        <strong>Catatan:</strong> Railway $5 credit cukup untuk project kecil-menengah
+    </div>
+</div>
+
+<div class="section">
+    <h2>🎯 Timeline Deployment</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Waktu</th>
+                <th>Task</th>
+                <th>Durasi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>0-30 menit</td>
+                <td>Fix API URL, CORS, environment variables</td>
+                <td>30 menit</td>
+            </tr>
+            <tr>
+                <td>30-60 menit</td>
+                <td>Push ke GitHub, setup Railway</td>
+                <td>30 menit</td>
+            </tr>
+            <tr>
+                <td>60-90 menit</td>
+                <td>Deploy backend, test API</td>
+                <td>30 menit</td>
+            </tr>
+            <tr>
+                <td>90-120 menit</td>
+                <td>Deploy frontend, update CORS</td>
+                <td>30 menit</td>
+            </tr>
+            <tr>
+                <td>120-150 menit</td>
+                <td>Testing end-to-end, bug fixing</td>
+                <td>30 menit</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="info">
+        <strong>⏱️ Total:</strong> ~2.5 jam dari mulai fix sampai deployed!
+    </div>
+</div>
+
+<div class="section">
+    <h2>📝 Summary</h2>
+
+    <h3>✅ Yang Harus Dilakukan:</h3>
+    <ol>
+        <li><strong>Fix API URL</strong> - Gunakan environment variable</li>
+        <li><strong>Fix CORS</strong> - Add middleware di backend</li>
+        <li><strong>Deploy Backend</strong> - Railway (FREE)</li>
+        <li><strong>Deploy Frontend</strong> - Vercel (FREE)</li>
+        <li><strong>Test End-to-End</strong> - Upload & deteksi</li>
+    </ol>
+
+    <h3>🎯 Hasil Akhir:</h3>
+    <ul>
+        <li>✅ Aplikasi online 24/7</li>
+        <li>✅ Bisa diakses dari mana saja</li>
+        <li>✅ URL public untuk demo</li>
+        <li>✅ Siap untuk presentasi & laporan</li>
+    </ul>
+
+    <div class="highlight">
+        <strong>🚀 NEXT STEP:</strong> Mulai dari fix API URL & CORS, lalu deploy!<br>
+        <strong>💪 Good luck bro!</strong> Kalau ada masalah, tanya aja!
+    </div>
+</div>
+
+<footer style="text-align: center; margin-top: 40px; padding: 20px; border-top: 2px solid #ddd;">
+    <p style="color: #666;">🌊 OceanGuard Deployment Guide</p>
+    <p style="color: #999; font-size: 0.9em;">Dibuat: 29 Mei 2026</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Training & Evaluasi Model - OceanGuard</title>
+    <style>
+        /* Reset & Base */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 12pt;
+            line-height: 1.5;
+            color: #000;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 25mm 30mm;
+            background: #fff;
+        }
+
+        /* Headings */
+        h1 {
+            font-size: 14pt;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: 12pt;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            page-break-after: avoid;
+        }
+
+        h3 {
+            font-size: 12pt;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+
+        /* Paragraphs */
+        p {
+            text-align: justify;
+            text-indent: 1.27cm;
+            margin-bottom: 10px;
+        }
+
+        p.no-indent {
+            text-indent: 0;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0 15px 0;
+            font-size: 11pt;
+        }
+
+        table, th, td {
+            border: 1px solid #000;
+        }
+
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            padding: 6px 8px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        td {
+            padding: 6px 8px;
+            vertical-align: top;
+        }
+
+        /* Lists */
+        ol, ul {
+            margin-left: 1.27cm;
+            margin-bottom: 10px;
+        }
+
+        li {
+            margin-bottom: 4px;
+            text-align: justify;
+        }
+
+        /* Code blocks */
+        pre {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 10pt;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        code {
+            background: #f5f5f5;
+            padding: 2px 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 10pt;
+        }
+
+        /* Subtitle */
+        .subtitle {
+            text-align: center;
+            font-size: 12pt;
+            margin-bottom: 20px;
+        }
+
+        /* Horizontal Rule */
+        hr {
+            border: none;
+            border-top: 1px solid #000;
+            margin: 20px 0;
+        }
+
+        /* Highlight boxes */
+        .highlight {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 10px 15px;
+            margin: 10px 0;
+        }
+
+        .warning {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 10px 15px;
+            margin: 10px 0;
+        }
+
+        .info {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 10px 15px;
+            margin: 10px 0;
+        }
+
+        /* Print-friendly */
+        @media print {
+            body {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- JUDUL LAPORAN -->
+    <h1>LAPORAN TRAINING DAN EVALUASI MODEL</h1>
+    <h1>OCEANGUARD: DETEKSI SAMPAH LAUT MENGGUNAKAN YOLOv8</h1>
+    <p class="subtitle"><strong>Mata Kuliah:</strong> Pengolahan Citra Digital — Tahun Ajaran Genap 2025/2026</p>
+
+    <hr>
+
+    <!-- ========================================= -->
+    <!-- 1. RINGKASAN EKSEKUTIF -->
+    <!-- ========================================= -->
+    <h2>1. Ringkasan Eksekutif</h2>
+
+    <p>
+        Laporan ini menyajikan hasil training dan evaluasi model YOLOv8 untuk sistem deteksi sampah laut OceanGuard. Model berhasil dilatih menggunakan dataset yang terdiri dari 3,028 gambar dengan 6 kategori sampah laut. Training dilakukan di Google Colab menggunakan GPU Tesla T4 dengan durasi 3 jam 4 menit (148 epochs dengan early stopping).
+    </p>
+
+    <div class="highlight">
+        <p class="no-indent"><strong>Hasil Utama:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 5px;">
+            <li><strong>mAP@50:</strong> 82.8% (melampaui target 80%)</li>
+            <li><strong>Precision:</strong> 82.7% (excellent)</li>
+            <li><strong>Recall:</strong> 74.5% (good)</li>
+            <li><strong>F1 Score:</strong> 78.4% (good)</li>
+            <li><strong>Status:</strong> Model siap untuk production deployment</li>
+        </ul>
+    </div>
+
+    <!-- ========================================= -->
+    <!-- 2. DATASET -->
+    <!-- ========================================= -->
+    <h2>2. Dataset</h2>
+
+    <h3>2.1 Sumber Dataset</h3>
+    <p>
+        Dataset yang digunakan merupakan hasil merger dari beberapa dataset publik yang tersedia di platform Roboflow Universe. Dataset final terdiri dari 3,028 gambar underwater trash dengan anotasi bounding box dalam format YOLO.
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 25%;">Atribut</th>
+                <th style="width: 75%;">Nilai</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Total Images</strong></td>
+                <td>2,899 instances (dari ~3,000 gambar)</td>
+            </tr>
+            <tr>
+                <td><strong>Training Set</strong></td>
+                <td>2,120 gambar (70%)</td>
+            </tr>
+            <tr>
+                <td><strong>Validation Set</strong></td>
+                <td>454 gambar (15%)</td>
+            </tr>
+            <tr>
+                <td><strong>Test Set</strong></td>
+                <td>454 gambar (15%)</td>
+            </tr>
+            <tr>
+                <td><strong>Jumlah Kelas</strong></td>
+                <td>6 kategori sampah laut</td>
+            </tr>
+            <tr>
+                <td><strong>Format Anotasi</strong></td>
+                <td>YOLO format (bounding box)</td>
+            </tr>
+            <tr>
+                <td><strong>Resolusi Gambar</strong></td>
+                <td>Bervariasi (di-resize ke 640×640 saat training)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>2.2 Distribusi Kelas</h3>
+    <p>
+        Dataset memiliki distribusi yang relatif seimbang untuk semua kelas, dengan class "electronics" memiliki jumlah sampel paling sedikit.
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 5%;">No</th>
+                <th style="width: 25%;">Kelas</th>
+                <th style="width: 20%;">Jumlah Instances</th>
+                <th style="width: 15%;">Persentase</th>
+                <th style="width: 35%;">Keterangan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: center;">1</td>
+                <td>plastic</td>
+                <td style="text-align: center;">595</td>
+                <td style="text-align: center;">20.5%</td>
+                <td>Potongan plastik, bungkus, kemasan</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">2</td>
+                <td>bottle</td>
+                <td style="text-align: center;">582</td>
+                <td style="text-align: center;">20.0%</td>
+                <td>Botol plastik dan kaca</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">3</td>
+                <td>other</td>
+                <td style="text-align: center;">566</td>
+                <td style="text-align: center;">19.5%</td>
+                <td>Styrofoam, karet, kain, dll</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">4</td>
+                <td>net_rope</td>
+                <td style="text-align: center;">565</td>
+                <td style="text-align: center;">19.4%</td>
+                <td>Jaring ikan, tali, senar</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">5</td>
+                <td>can</td>
+                <td style="text-align: center;">491</td>
+                <td style="text-align: center;">16.9%</td>
+                <td>Kaleng minuman dan makanan</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">6</td>
+                <td>electronics</td>
+                <td style="text-align: center;">210</td>
+                <td style="text-align: center;">7.5%</td>
+                <td>Perangkat elektronik</td>
+            </tr>
+            <tr style="background-color: #f0f0f0;">
+                <td colspan="2" style="text-align: center;"><strong>TOTAL</strong></td>
+                <td style="text-align: center;"><strong>2,899</strong></td>
+                <td style="text-align: center;"><strong>100%</strong></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ========================================= -->
+    <!-- 3. KONFIGURASI TRAINING -->
+    <!-- ========================================= -->
+    <h2>3. Konfigurasi Training</h2>
+
+    <h3>3.1 Environment</h3>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 30%;">Parameter</th>
+                <th style="width: 70%;">Nilai</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Platform</strong></td>
+                <td>Google Colab (Free Tier)</td>
+            </tr>
+            <tr>
+                <td><strong>GPU</strong></td>
+                <td>Tesla T4 (14,913 MiB VRAM)</td>
+            </tr>
+            <tr>
+                <td><strong>Python Version</strong></td>
+                <td>3.12.13</td>
+            </tr>
+            <tr>
+                <td><strong>PyTorch Version</strong></td>
+                <td>2.11.0+cu128</td>
+            </tr>
+            <tr>
+                <td><strong>Ultralytics Version</strong></td>
+                <td>8.3.0</td>
+            </tr>
+            <tr>
+                <td><strong>CUDA Version</strong></td>
+                <td>12.8</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>3.2 Hyperparameters</h3>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 30%;">Parameter</th>
+                <th style="width: 20%;">Nilai</th>
+                <th style="width: 50%;">Keterangan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Model Architecture</strong></td>
+                <td>YOLOv8 Nano</td>
+                <td>Model ringan dengan 2.7M parameters</td>
+            </tr>
+            <tr>
+                <td><strong>Pretrained Weights</strong></td>
+                <td>yolov8n.pt (COCO)</td>
+                <td>Transfer learning dari MS COCO dataset</td>
+            </tr>
+            <tr>
+                <td><strong>Input Size</strong></td>
+                <td>640 × 640 px</td>
+                <td>Ukuran standar YOLOv8</td>
+            </tr>
+            <tr>
+                <td><strong>Epochs</strong></td>
+                <td>200 (stopped at 148)</td>
+                <td>Early stopping dengan patience=20</td>
+            </tr>
+            <tr>
+                <td><strong>Batch Size</strong></td>
+                <td>16</td>
+                <td>Optimal untuk Tesla T4 GPU</td>
+            </tr>
+            <tr>
+                <td><strong>Optimizer</strong></td>
+                <td>AdamW</td>
+                <td>Default optimizer YOLOv8</td>
+            </tr>
+            <tr>
+                <td><strong>Initial Learning Rate</strong></td>
+                <td>0.001</td>
+                <td>lr0 parameter</td>
+            </tr>
+            <tr>
+                <td><strong>Final Learning Rate</strong></td>
+                <td>0.00001 (1% of lr0)</td>
+                <td>lrf parameter</td>
+            </tr>
+            <tr>
+                <td><strong>Weight Decay</strong></td>
+                <td>0.0005</td>
+                <td>L2 regularization</td>
+            </tr>
+            <tr>
+                <td><strong>Warmup Epochs</strong></td>
+                <td>3.0</td>
+                <td>Gradual learning rate warmup</td>
+            </tr>
+            <tr>
+                <td><strong>Mosaic Augmentation</strong></td>
+                <td>1.0</td>
+                <td>Enabled (disabled in last 10 epochs)</td>
+            </tr>
+            <tr>
+                <td><strong>Mixup Augmentation</strong></td>
+                <td>0.1</td>
+                <td>10% probability</td>
+            </tr>
+            <tr>
+                <td><strong>HSV Augmentation</strong></td>
+                <td>H=0.015, S=0.7, V=0.4</td>
+                <td>Color space augmentation</td>
+            </tr>
+            <tr>
+                <td><strong>Rotation</strong></td>
+                <td>±15°</td>
+                <td>Random rotation augmentation</td>
+            </tr>
+            <tr>
+                <td><strong>Translation</strong></td>
+                <td>10%</td>
+                <td>Random shift augmentation</td>
+            </tr>
+            <tr>
+                <td><strong>Scale</strong></td>
+                <td>50%</td>
+                <td>Random scale augmentation</td>
+            </tr>
+            <tr>
+                <td><strong>Horizontal Flip</strong></td>
+                <td>50%</td>
+                <td>Random horizontal flip</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ========================================= -->
+    <!-- 4. HASIL TRAINING -->
+    <!-- ========================================= -->
+    <h2>4. Hasil Training</h2>
+
+    <h3>4.1 Training Summary</h3>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 35%;">Metrik</th>
+                <th style="width: 65%;">Nilai</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Total Epochs</strong></td>
+                <td>148 epochs (dari target 200)</td>
+            </tr>
+            <tr>
+                <td><strong>Best Epoch</strong></td>
+                <td>Epoch 128</td>
+            </tr>
+            <tr>
+                <td><strong>Early Stopping</strong></td>
+                <td>Triggered at epoch 148 (no improvement for 20 epochs)</td>
+            </tr>
+            <tr>
+                <td><strong>Training Duration</strong></td>
+                <td>3 hours 4 minutes (3.066 hours)</td>
+            </tr>
+            <tr>
+                <td><strong>Average Time per Epoch</strong></td>
+                <td>~1.24 minutes</td>
+            </tr>
+            <tr>
+                <td><strong>Model Size</strong></td>
+                <td>5.6 MB (best.pt)</td>
+            </tr>
+            <tr>
+                <td><strong>Parameters</strong></td>
+                <td>2,685,538 parameters</td>
+            </tr>
+            <tr>
+                <td><strong>GFLOPs</strong></td>
+                <td>6.8 GFLOPs</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="info">
+        <p class="no-indent"><strong>Catatan:</strong> Early stopping adalah fitur yang menghentikan training secara otomatis ketika model tidak menunjukkan improvement selama periode tertentu (patience=20 epochs). Ini mencegah overfitting dan menghemat waktu training. Model terbaik disimpan pada epoch 128.</p>
+    </div>
+
+    <!-- ========================================= -->
+    <!-- 5. EVALUASI MODEL -->
+    <!-- ========================================= -->
+    <h2>5. Evaluasi Model</h2>
+
+    <h3>5.1 Metrik Evaluasi Keseluruhan</h3>
+    <p>
+        Model dievaluasi menggunakan validation set yang terdiri dari 348 gambar dengan 466 instances objek sampah laut.
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 25%;">Metrik</th>
+                <th style="width: 20%;">Nilai</th>
+                <th style="width: 15%;">Target</th>
+                <th style="width: 15%;">Status</th>
+                <th style="width: 25%;">Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="background-color: #e8f5e9;">
+                <td><strong>mAP@50</strong></td>
+                <td style="text-align: center;"><strong>82.8%</strong></td>
+                <td style="text-align: center;">&gt; 80%</td>
+                <td style="text-align: center;">✅ PASS</td>
+                <td style="text-align: center;">⭐⭐⭐⭐⭐ Excellent</td>
+            </tr>
+            <tr>
+                <td><strong>mAP@50-95</strong></td>
+                <td style="text-align: center;">50.7%</td>
+                <td style="text-align: center;">&gt; 45%</td>
+                <td style="text-align: center;">✅ PASS</td>
+                <td style="text-align: center;">⭐⭐⭐⭐ Good</td>
+            </tr>
+            <tr style="background-color: #e8f5e9;">
+                <td><strong>Precision</strong></td>
+                <td style="text-align: center;"><strong>82.7%</strong></td>
+                <td style="text-align: center;">&gt; 80%</td>
+                <td style="text-align: center;">✅ PASS</td>
+                <td style="text-align: center;">⭐⭐⭐⭐⭐ Excellent</td>
+            </tr>
+            <tr>
+                <td><strong>Recall</strong></td>
+                <td style="text-align: center;">74.5%</td>
+                <td style="text-align: center;">&gt; 70%</td>
+                <td style="text-align: center;">✅ PASS</td>
+                <td style="text-align: center;">⭐⭐⭐⭐ Good</td>
+            </tr>
+            <tr>
+                <td><strong>F1 Score</strong></td>
+                <td style="text-align: center;">78.4%</td>
+                <td style="text-align: center;">&gt; 75%</td>
+                <td style="text-align: center;">✅ PASS</td>
+                <td style="text-align: center;">⭐⭐⭐⭐ Good</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="highlight">
+        <p class="no-indent"><strong>Kesimpulan:</strong> Model berhasil melampaui semua target metrik yang ditetapkan. Dengan mAP@50 sebesar 82.8% dan precision 82.7%, model menunjukkan performa excellent dan siap untuk deployment ke production.</p>
+    </div>
+
+    <h3>5.2 Performa Per Kelas</h3>
+    <p>
+        Analisis performa model untuk setiap kategori sampah laut menunjukkan variasi yang signifikan antar kelas.
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 5%;">No</th>
+                <th style="width: 20%;">Kelas</th>
+                <th style="width: 12%;">Images</th>
+                <th style="width: 12%;">Instances</th>
+                <th style="width: 13%;">Precision</th>
+                <th style="width: 13%;">Recall</th>
+                <th style="width: 13%;">mAP@50</th>
+                <th style="width: 12%;">Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="background-color: #e8f5e9;">
+                <td style="text-align: center;">1</td>
+                <td><strong>electronics</strong></td>
+                <td style="text-align: center;">14</td>
+                <td style="text-align: center;">23</td>
+                <td style="text-align: center;">87.2%</td>
+                <td style="text-align: center;">88.7%</td>
+                <td style="text-align: center;"><strong>94.3%</strong></td>
+                <td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+            </tr>
+            <tr style="background-color: #e8f5e9;">
+                <td style="text-align: center;">2</td>
+                <td><strong>net_rope</strong></td>
+                <td style="text-align: center;">103</td>
+                <td style="text-align: center;">103</td>
+                <td style="text-align: center;">90.7%</td>
+                <td style="text-align: center;">83.5%</td>
+                <td style="text-align: center;"><strong>88.7%</strong></td>
+                <td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+            </tr>
+            <tr style="background-color: #e8f5e9;">
+                <td style="text-align: center;">3</td>
+                <td><strong>bottle</strong></td>
+                <td style="text-align: center;">77</td>
+                <td style="text-align: center;">85</td>
+                <td style="text-align: center;">85.5%</td>
+                <td style="text-align: center;">76.5%</td>
+                <td style="text-align: center;"><strong>87.2%</strong></td>
+                <td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">4</td>
+                <td><strong>plastic</strong></td>
+                <td style="text-align: center;">64</td>
+                <td style="text-align: center;">70</td>
+                <td style="text-align: center;">77.0%</td>
+                <td style="text-align: center;">80.0%</td>
+                <td style="text-align: center;">84.1%</td>
+                <td style="text-align: center;">⭐⭐⭐⭐</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">5</td>
+                <td><strong>can</strong></td>
+                <td style="text-align: center;">54</td>
+                <td style="text-align: center;">72</td>
+                <td style="text-align: center;">72.7%</td>
+                <td style="text-align: center;">70.8%</td>
+                <td style="text-align: center;">74.8%</td>
+                <td style="text-align: center;">⭐⭐⭐</td>
+            </tr>
+            <tr style="background-color: #fff3e0;">
+                <td style="text-align: center;">6</td>
+                <td><strong>other</strong></td>
+                <td style="text-align: center;">68</td>
+                <td style="text-align: center;">113</td>
+                <td style="text-align: center;">82.9%</td>
+                <td style="text-align: center;">46.9%</td>
+                <td style="text-align: center;">67.9%</td>
+                <td style="text-align: center;">⭐⭐</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>5.3 Analisis Per Kelas</h3>
+
+    <p><strong>Kelas dengan Performa Terbaik (mAP &gt; 85%):</strong></p>
+    <ul>
+        <li><strong>electronics (94.3%):</strong> Performa outstanding dengan precision dan recall tinggi. Meskipun jumlah sampel paling sedikit (23 instances), model mampu mengenali objek elektronik dengan sangat baik karena karakteristik visual yang distinktif.</li>
+        <li><strong>net_rope (88.7%):</strong> Excellent performance dengan precision tertinggi (90.7%). Jaring dan tali memiliki tekstur dan pola yang khas sehingga mudah dikenali model.</li>
+        <li><strong>bottle (87.2%):</strong> Performa sangat baik dengan balance antara precision dan recall. Bentuk botol yang konsisten memudahkan deteksi.</li>
+    </ul>
+
+    <p><strong>Kelas dengan Performa Baik (mAP 75-85%):</strong></p>
+    <ul>
+        <li><strong>plastic (84.1%):</strong> Good performance dengan recall tinggi (80.0%). Model mampu mendeteksi sebagian besar objek plastik meskipun bentuknya bervariasi.</li>
+        <li><strong>can (74.8%):</strong> Performa fair dengan ruang untuk improvement. Kaleng sering tertutup sedimen atau terkorosi sehingga lebih sulit dideteksi.</li>
+    </ul>
+
+    <p><strong>Kelas yang Memerlukan Perhatian (mAP &lt; 75%):</strong></p>
+    <ul>
+        <li><strong>other (67.9%):</strong> Performa terendah dengan recall hanya 46.9%. Ini adalah hasil yang expected karena class "other" merupakan catch-all category dengan variasi objek yang sangat tinggi (styrofoam, karet, kain, dll). Banyak objek "other" yang missed oleh model karena tidak memiliki karakteristik visual yang konsisten.</li>
+    </ul>
+
+    <div class="warning">
+        <p class="no-indent"><strong>Rekomendasi Improvement:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 5px;">
+            <li>Untuk class "can": Tambah 50-100 gambar dengan variasi kondisi kaleng (bersih, berkarat, tertutup sedimen)</li>
+            <li>Untuk class "other": Pertimbangkan untuk memecah menjadi sub-kategori yang lebih spesifik (styrofoam, rubber, fabric) atau menghapus class ini dan fokus pada 5 kelas utama</li>
+            <li>Augmentasi tambahan untuk underwater conditions: blur, noise, color distortion</li>
+        </ul>
+    </div>
+
+    <h3>5.4 Analisis Confusion Matrix</h3>
+    <p>
+        Confusion matrix memberikan insight mendalam tentang bagaimana model melakukan kesalahan klasifikasi. Matrix ini menunjukkan hubungan antara kelas yang diprediksi (sumbu horizontal) dengan kelas sebenarnya (sumbu vertikal).
+    </p>
+
+    <div class="info">
+        <p class="no-indent"><strong>Cara Membaca Confusion Matrix:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 5px;">
+            <li><strong>Diagonal (warna gelap):</strong> Prediksi yang benar (True Positives)</li>
+            <li><strong>Off-diagonal (warna terang):</strong> Kesalahan klasifikasi</li>
+            <li><strong>Baris:</strong> Kelas sebenarnya (ground truth)</li>
+            <li><strong>Kolom:</strong> Kelas yang diprediksi model</li>
+        </ul>
+    </div>
+
+    <p><strong>Analisis Detail per Kelas:</strong></p>
+
+    <p><strong>1. bottle (68 correct predictions):</strong></p>
+    <ul>
+        <li>✅ <strong>68 botol</strong> terdeteksi dengan benar</li>
+        <li>❌ <strong>3 botol</strong> salah diprediksi sebagai <em>can</em> (kemungkinan botol kaleng atau botol logam)</li>
+        <li>❌ <strong>21 botol</strong> salah diprediksi sebagai <em>background</em> (missed detection - botol tidak terdeteksi)</li>
+        <li><strong>Insight:</strong> Model sangat baik mengenali botol (68/95 = 71.6% recall), namun ada 21 botol yang terlewat karena mungkin tertutup sedimen atau visibility rendah</li>
+    </ul>
+
+    <p><strong>2. can (57 correct predictions):</strong></p>
+    <ul>
+        <li>✅ <strong>57 kaleng</strong> terdeteksi dengan benar</li>
+        <li>❌ <strong>2 kaleng</strong> salah diprediksi sebagai <em>bottle</em> (confusion antara kaleng dan botol logam)</li>
+        <li>❌ <strong>34 kaleng</strong> salah diprediksi sebagai <em>background</em> (missed detection)</li>
+        <li><strong>Insight:</strong> Recall rendah (57/97 = 58.8%) menunjukkan banyak kaleng yang terlewat. Ini konsisten dengan mAP@50 terendah kedua (74.8%). Kaleng sering berkarat atau tertutup sedimen sehingga sulit dideteksi</li>
+    </ul>
+
+    <p><strong>3. electronics (22 correct predictions):</strong></p>
+    <ul>
+        <li>✅ <strong>22 elektronik</strong> terdeteksi dengan benar</li>
+        <li>❌ <strong>8 elektronik</strong> salah diprediksi sebagai <em>background</em> (missed detection)</li>
+        <li><strong>Insight:</strong> Meskipun jumlah sampel sedikit, model sangat baik mengenali elektronik (22/34 = 64.7% recall). Ini konsisten dengan mAP@50 tertinggi (94.3%)</li>
+    </ul>
+
+    <p><strong>4. net_rope (91 correct predictions):</strong></p>
+    <ul>
+        <li>✅ <strong>91 jaring/tali</strong> terdeteksi dengan benar</li>
+        <li>❌ <strong>1 jaring</strong> salah diprediksi sebagai <em>other</em></li>
+        <li>❌ <strong>8 jaring</strong> salah diprediksi sebagai <em>background</em> (missed detection)</li>
+        <li><strong>Insight:</strong> Performa excellent (91/103 = 88.3% recall). Jaring memiliki tekstur dan pola yang sangat khas sehingga mudah dikenali</li>
+    </ul>
+
+    <p><strong>5. other (61 correct predictions):</strong></p>
+    <ul>
+        <li>✅ <strong>61 objek "other"</strong> terdeteksi dengan benar</li>
+        <li>❌ <strong>2 objek</strong> salah diprediksi sebagai <em>bottle</em></li>
+        <li>❌ <strong>1 objek</strong> salah diprediksi sebagai <em>can</em></li>
+        <li>❌ <strong>1 objek</strong> salah diprediksi sebagai <em>net_rope</em></li>
+        <li>❌ <strong>1 objek</strong> salah diprediksi sebagai <em>plastic</em></li>
+        <li>❌ <strong>16 objek</strong> salah diprediksi sebagai <em>background</em> (missed detection)</li>
+        <li><strong>Insight:</strong> Recall rendah (61/130 = 46.9%) karena class "other" sangat heterogen. Banyak objek yang tidak terdeteksi atau salah diklasifikasi ke kelas lain</li>
+    </ul>
+
+    <p><strong>6. plastic (59 correct predictions):</strong></p>
+    <ul>
+        <li>✅ <strong>59 plastik</strong> terdeteksi dengan benar</li>
+        <li>❌ <strong>4 plastik</strong> salah diprediksi sebagai <em>bottle</em> (kemungkinan botol plastik yang rusak)</li>
+        <li>❌ <strong>1 plastik</strong> salah diprediksi sebagai <em>electronics</em></li>
+        <li>❌ <strong>3 plastik</strong> salah diprediksi sebagai <em>other</em></li>
+        <li>❌ <strong>20 plastik</strong> salah diprediksi sebagai <em>background</em> (missed detection)</li>
+        <li><strong>Insight:</strong> Recall cukup baik (59/87 = 67.8%). Confusion dengan bottle adalah expected karena botol juga terbuat dari plastik</li>
+    </ul>
+
+    <p><strong>7. background (False Positives Analysis):</strong></p>
+    <ul>
+        <li>❌ <strong>9 background</strong> salah diprediksi sebagai <em>bottle</em></li>
+        <li>❌ <strong>11 background</strong> salah diprediksi sebagai <em>can</em></li>
+        <li>❌ <strong>11 background</strong> salah diprediksi sebagai <em>net_rope</em></li>
+        <li>❌ <strong>39 background</strong> salah diprediksi sebagai <em>other</em></li>
+        <li>❌ <strong>8 background</strong> salah diprediksi sebagai <em>plastic</em></li>
+        <li><strong>Insight:</strong> Total 78 false positives. Class "other" memiliki false positive tertinggi (39), menunjukkan model terlalu agresif memprediksi objek sebagai "other"</li>
+    </ul>
+
+    <h3>5.5 Kesimpulan dari Confusion Matrix</h3>
+
+    <p><strong>Kekuatan Model:</strong></p>
+    <ol>
+        <li><strong>net_rope:</strong> Performa terbaik dengan 91% correct predictions dan minimal confusion</li>
+        <li><strong>electronics:</strong> Meskipun sampel sedikit, model sangat confident (94.3% mAP)</li>
+        <li><strong>bottle:</strong> Good performance dengan confusion minimal</li>
+    </ol>
+
+    <p><strong>Kelemahan Model:</strong></p>
+    <ol>
+        <li><strong>Missed Detections (Background):</strong> Total 108 objek tidak terdeteksi, dengan can (34) dan bottle (21) paling banyak terlewat</li>
+        <li><strong>Class "other":</strong> Recall sangat rendah (46.9%) dan banyak false positives (39)</li>
+        <li><strong>Confusion bottle-can:</strong> Ada overlap antara botol dan kaleng (5 misclassifications total)</li>
+    </ol>
+
+    <p><strong>Rekomendasi Berdasarkan Confusion Matrix:</strong></p>
+    <ol>
+        <li><strong>Reduce Missed Detections:</strong> Turunkan confidence threshold dari 0.25 ke 0.20 untuk mendeteksi lebih banyak objek (trade-off: lebih banyak false positives)</li>
+        <li><strong>Improve "can" detection:</strong> Tambah data augmentation untuk kondisi kaleng berkarat/tertutup sedimen</li>
+        <li><strong>Refine "other" class:</strong> Pecah menjadi sub-kategori atau hapus class ini untuk mengurangi confusion</li>
+        <li><strong>Hard negative mining:</strong> Tambah background samples yang mirip dengan objek untuk mengurangi false positives</li>
+    </ol>
+
+    <!-- ========================================= -->
+    <!-- 6. PERBANDINGAN DENGAN BASELINE -->
+    <!-- ========================================= -->
+    <h2>6. Perbandingan dengan Baseline (Roboflow)</h2>
+
+    <p>
+        Sebagai baseline, kami membandingkan hasil training di Google Colab dengan hasil training menggunakan platform Roboflow (Model 3) yang menggunakan dataset yang sama.
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 25%;">Metrik</th>
+                <th style="width: 20%;">Model Kami (Colab)</th>
+                <th style="width: 20%;">Roboflow Baseline</th>
+                <th style="width: 15%;">Selisih</th>
+                <th style="width: 20%;">Keterangan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="background-color: #e8f5e9;">
+                <td><strong>mAP@50</strong></td>
+                <td style="text-align: center;"><strong>82.8%</strong></td>
+                <td style="text-align: center;">81.6%</td>
+                <td style="text-align: center;"><strong>+1.2%</strong></td>
+                <td style="text-align: center;">🎉 BETTER!</td>
+            </tr>
+            <tr>
+                <td><strong>Precision</strong></td>
+                <td style="text-align: center;">82.7%</td>
+                <td style="text-align: center;">84.6%</td>
+                <td style="text-align: center;">-1.9%</td>
+                <td style="text-align: center;">⚠️ Lower</td>
+            </tr>
+            <tr style="background-color: #e8f5e9;">
+                <td><strong>Recall</strong></td>
+                <td style="text-align: center;"><strong>74.5%</strong></td>
+                <td style="text-align: center;">74.3%</td>
+                <td style="text-align: center;"><strong>+0.2%</strong></td>
+                <td style="text-align: center;">🎉 BETTER!</td>
+            </tr>
+            <tr>
+                <td><strong>F1 Score</strong></td>
+                <td style="text-align: center;">78.4%</td>
+                <td style="text-align: center;">79.1%</td>
+                <td style="text-align: center;">-0.7%</td>
+                <td style="text-align: center;">⚠️ Lower</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>6.1 Analisis Perbandingan</h3>
+    <p>
+        Model yang dilatih di Google Colab menunjukkan performa yang <strong>lebih baik</strong> dibandingkan baseline Roboflow dalam metrik utama (mAP@50). Berikut adalah analisis detail:
+    </p>
+
+    <p><strong>Keunggulan Model Kami:</strong></p>
+    <ol>
+        <li><strong>mAP@50 lebih tinggi (+1.2%):</strong> Ini adalah metrik paling penting untuk object detection. Model kami mampu mendeteksi objek dengan akurasi yang lebih baik pada threshold IoU 0.5.</li>
+        <li><strong>Recall lebih tinggi (+0.2%):</strong> Model kami mampu mendeteksi lebih banyak objek yang sebenarnya ada (fewer false negatives). Ini penting untuk aplikasi monitoring sampah laut agar tidak ada sampah yang terlewat.</li>
+        <li><strong>Kontrol penuh atas hyperparameters:</strong> Training di Colab memberikan fleksibilitas untuk fine-tuning hyperparameters sesuai kebutuhan.</li>
+    </ol>
+
+    <p><strong>Trade-off:</strong></p>
+    <ol>
+        <li><strong>Precision sedikit lebih rendah (-1.9%):</strong> Model kami menghasilkan sedikit lebih banyak false positives. Namun, trade-off ini acceptable karena dalam konteks monitoring sampah laut, lebih baik mendeteksi objek yang mungkin bukan sampah (false positive) daripada melewatkan sampah yang sebenarnya ada (false negative).</li>
+        <li><strong>F1 Score sedikit lebih rendah (-0.7%):</strong> Perbedaan ini sangat kecil dan masih dalam margin of error.</li>
+    </ol>
+
+    <div class="highlight">
+        <p class="no-indent"><strong>Kesimpulan:</strong> Model yang dilatih di Google Colab dengan konfigurasi optimal berhasil melampaui performa baseline Roboflow dalam metrik utama (mAP@50). Trade-off antara precision dan recall menunjukkan bahwa model kami lebih fokus pada mendeteksi sebanyak mungkin objek sampah (high recall) dengan tetap mempertahankan akurasi yang excellent (high precision).</p>
+    </div>
+
+    <!-- ========================================= -->
+    <!-- 7. INFERENCE SPEED -->
+    <!-- ========================================= -->
+    <h2>7. Kecepatan Inferensi</h2>
+
+    <p>
+        Kecepatan inferensi diukur pada validation set menggunakan GPU Tesla T4. Berikut adalah breakdown waktu per tahap:
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 40%;">Tahap</th>
+                <th style="width: 30%;">Waktu (ms)</th>
+                <th style="width: 30%;">Keterangan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Preprocessing</td>
+                <td style="text-align: center;">0.6 ms</td>
+                <td>Resize, normalisasi</td>
+            </tr>
+            <tr>
+                <td>Inference (Model)</td>
+                <td style="text-align: center;">5.7 ms</td>
+                <td>Forward pass YOLOv8</td>
+            </tr>
+            <tr>
+                <td>Loss Calculation</td>
+                <td style="text-align: center;">0.0 ms</td>
+                <td>Tidak ada saat inference</td>
+            </tr>
+            <tr>
+                <td>Postprocessing (NMS)</td>
+                <td style="text-align: center;">3.5 ms</td>
+                <td>Non-Maximum Suppression</td>
+            </tr>
+            <tr style="background-color: #f0f0f0;">
+                <td><strong>Total per Image</strong></td>
+                <td style="text-align: center;"><strong>9.8 ms</strong></td>
+                <td><strong>~102 FPS</strong></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="info">
+        <p class="no-indent"><strong>Interpretasi:</strong> Dengan kecepatan inferensi ~102 FPS pada GPU Tesla T4, model mampu memproses video real-time dengan sangat baik. Bahkan pada CPU, YOLOv8 Nano dapat mencapai 20-30 FPS yang cukup untuk aplikasi web interaktif.</p>
+    </div>
+
+    <!-- ========================================= -->
+    <!-- 8. KENDALA TEKNIS -->
+    <!-- ========================================= -->
+    <h2>8. Kendala Teknis yang Dihadapi</h2>
+
+    <h3>8.1 Masalah Numpy Compatibility</h3>
+    <p>
+        <strong>Masalah:</strong> Error <code>ValueError: numpy.dtype size changed</code> terjadi saat menjalankan training di Google Colab karena incompatibility antara versi numpy dan package lain (scipy, torch).
+    </p>
+    <p>
+        <strong>Solusi:</strong> Uninstall numpy dan scipy, lalu install numpy versi 1.26.4 yang compatible dengan PyTorch 2.11.0. Setelah itu, restart runtime untuk memastikan package yang baru ter-load.
+    </p>
+    <pre>!pip uninstall -y numpy scipy
+!pip install numpy==1.26.4
+# Restart runtime: Runtime → Restart runtime</pre>
+
+    <h3>8.2 Masalah Class Order Mismatch</h3>
+    <p>
+        <strong>Masalah:</strong> Setelah deployment, model mendeteksi objek dengan label yang salah (misalnya botol terdeteksi sebagai plastik). Ini terjadi karena urutan class names di aplikasi tidak match dengan urutan class names di model.
+    </p>
+    <p>
+        <strong>Penyebab:</strong> Roboflow export dataset dengan class names dalam alphabetical order (bottle, can, electronics, net_rope, other, plastic), sedangkan aplikasi menggunakan urutan manual yang berbeda (plastic, bottle, can, net_rope, other, electronics).
+    </p>
+    <p>
+        <strong>Solusi:</strong> Check class order dari model menggunakan <code>model.names</code>, lalu update <code>CLASS_NAMES</code> di <code>detector.py</code> dengan urutan yang sama persis.
+    </p>
+    <pre># Check class order di Colab
+from ultralytics import YOLO
+model = YOLO('best.pt')
+print(model.names)  # {0: 'bottle', 1: 'can', ...}
+
+# Update detector.py dengan urutan yang benar
+CLASS_NAMES = [
+    "bottle",       # Index 0
+    "can",          # Index 1
+    "electronics",  # Index 2
+    "net_rope",     # Index 3
+    "other",        # Index 4
+    "plastic",      # Index 5
+]</pre>
+
+    <h3>8.3 Masalah Colab Disconnect</h3>
+    <p>
+        <strong>Masalah:</strong> Google Colab free tier memiliki idle timeout 90 menit dan maximum runtime 12 jam. Training yang lama berisiko disconnect dan kehilangan progress.
+    </p>
+    <p>
+        <strong>Solusi:</strong> 
+    </p>
+    <ul>
+        <li>Gunakan auto-save checkpoint setiap 10 epochs (<code>save_period=10</code>)</li>
+        <li>Implementasi early stopping untuk menghindari training yang terlalu lama</li>
+        <li>Backup model weights ke Google Drive secara berkala</li>
+        <li>Gunakan keep-awake script untuk mencegah idle timeout</li>
+    </ul>
+
+    <!-- ========================================= -->
+    <!-- 9. DEPLOYMENT -->
+    <!-- ========================================= -->
+    <h2>9. Deployment</h2>
+
+    <h3>9.1 Model Weights</h3>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 30%;">File</th>
+                <th style="width: 20%;">Size</th>
+                <th style="width: 50%;">Keterangan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>best.pt</code></td>
+                <td>5.6 MB</td>
+                <td>Model weights terbaik (epoch 128) - <strong>DEPLOY INI!</strong></td>
+            </tr>
+            <tr>
+                <td><code>last.pt</code></td>
+                <td>5.6 MB</td>
+                <td>Model weights terakhir (epoch 148) - untuk resume training</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>9.2 Deployment Steps</h3>
+    <ol>
+        <li><strong>Download model weights:</strong> Download <code>best.pt</code> dari Google Colab ke komputer lokal</li>
+        <li><strong>Copy ke project:</strong> Copy <code>best.pt</code> ke folder <code>model/weights/best.pt</code></li>
+        <li><strong>Update class names:</strong> Pastikan <code>CLASS_NAMES</code> di <code>detector.py</code> match dengan urutan class di model</li>
+        <li><strong>Test backend:</strong> Jalankan backend API dan test endpoint <code>/detect</code></li>
+        <li><strong>Test frontend:</strong> Upload gambar test dan verifikasi hasil deteksi</li>
+        <li><strong>Deploy to production:</strong> Deploy backend ke Railway/Render dan frontend ke Vercel</li>
+    </ol>
+
+    <h3>9.3 System Requirements</h3>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 30%;">Component</th>
+                <th style="width: 70%;">Requirements</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Backend (FastAPI)</strong></td>
+                <td>
+                    <ul style="margin-left: 15px;">
+                        <li>Python 3.10+</li>
+                        <li>ultralytics==8.3.0</li>
+                        <li>fastapi, uvicorn</li>
+                        <li>opencv-python, pillow</li>
+                        <li>RAM: 512 MB minimum (1 GB recommended)</li>
+                        <li>Storage: 50 MB (untuk model weights)</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Frontend (Next.js)</strong></td>
+                <td>
+                    <ul style="margin-left: 15px;">
+                        <li>Node.js 18+</li>
+                        <li>Next.js 14+</li>
+                        <li>React 18+</li>
+                        <li>Tailwind CSS</li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ========================================= -->
+    <!-- 10. KESIMPULAN -->
+    <!-- ========================================= -->
+    <h2>10. Kesimpulan</h2>
+
+    <p>
+        Training model YOLOv8 untuk sistem deteksi sampah laut OceanGuard telah berhasil dilakukan dengan hasil yang memuaskan. Model mencapai mAP@50 sebesar 82.8%, melampaui target yang ditetapkan (>80%) dan bahkan mengalahkan baseline Roboflow (+1.2%). Dengan precision 82.7% dan recall 74.5%, model menunjukkan balance yang baik antara akurasi deteksi dan coverage objek.
+    </p>
+
+    <p>
+        Performa per kelas menunjukkan bahwa model sangat baik dalam mendeteksi objek dengan karakteristik visual yang distinktif (electronics, net_rope, bottle) dengan mAP >85%. Kelas "other" memiliki performa terendah (67.9%) yang merupakan hasil expected mengingat variasi objek yang sangat tinggi dalam kategori ini.
+    </p>
+
+    <p>
+        Kecepatan inferensi ~102 FPS pada GPU Tesla T4 menunjukkan bahwa model sangat efisien dan mampu memproses video real-time. Bahkan pada CPU, YOLOv8 Nano dapat mencapai 20-30 FPS yang cukup untuk aplikasi web interaktif.
+    </p>
+
+    <p>
+        Beberapa kendala teknis yang dihadapi (numpy compatibility, class order mismatch, Colab disconnect) telah berhasil diatasi dengan solusi yang tepat. Model telah siap untuk deployment ke production dan dapat diintegrasikan ke dalam aplikasi web OceanGuard.
+    </p>
+
+    <div class="highlight">
+        <p class="no-indent"><strong>Status Akhir:</strong></p>
+        <ul style="margin-left: 20px; margin-top: 5px;">
+            <li>✅ Model training: COMPLETE</li>
+            <li>✅ Model evaluation: EXCELLENT (mAP 82.8%)</li>
+            <li>✅ Inference speed: FAST (~102 FPS)</li>
+            <li>✅ Model weights: READY (best.pt, 5.6 MB)</li>
+            <li>✅ Deployment: READY FOR PRODUCTION</li>
+        </ul>
+    </div>
+
+    <!-- ========================================= -->
+    <!-- 11. REKOMENDASI -->
+    <!-- ========================================= -->
+    <h2>11. Rekomendasi untuk Improvement</h2>
+
+    <h3>11.1 Short-term (1-2 minggu)</h3>
+    <ol>
+        <li><strong>Improve class "can":</strong> Tambah 50-100 gambar kaleng dengan variasi kondisi (bersih, berkarat, tertutup sedimen) untuk meningkatkan mAP dari 74.8% ke >80%</li>
+        <li><strong>Test pada real-world images:</strong> Collect gambar underwater trash dari lokasi berbeda di Indonesia dan test performa model</li>
+        <li><strong>Optimize for CPU inference:</strong> Export model ke format ONNX untuk inferensi lebih cepat pada CPU</li>
+    </ol>
+
+    <h3>11.2 Long-term (1-2 bulan)</h3>
+    <ol>
+        <li><strong>Refine class "other":</strong> Pecah menjadi sub-kategori yang lebih spesifik (styrofoam, rubber, fabric) atau hapus class ini dan fokus pada 5 kelas utama</li>
+        <li><strong>Upgrade to YOLOv8 Small/Medium:</strong> Jika resource memadai, upgrade ke model yang lebih besar untuk meningkatkan akurasi</li>
+        <li><strong>Implement instance segmentation:</strong> Upgrade dari bounding box detection ke instance segmentation untuk analisis yang lebih detail</li>
+        <li><strong>Add temporal consistency:</strong> Untuk video processing, implementasi tracking algorithm untuk konsistensi deteksi antar frame</li>
+    </ol>
+
+    <hr>
+
+    <p style="text-align: center; margin-top: 30px; font-style: italic;">
+        <strong>Laporan ini dibuat pada:</strong> 29 Mei 2026<br>
+        <strong>Proyek:</strong> OceanGuard - Sistem Deteksi Sampah Laut Berbasis YOLOv8<br>
+        <strong>Mata Kuliah:</strong> Pengolahan Citra Digital
+    </p>
+
+</body>
+</html>

@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ocean-50: #e6f7ff;
+  --color-ocean-100: #b3e6ff;
+  --color-ocean-200: #80d4ff;
+  --color-ocean-300: #4dc3ff;
+  --color-ocean-400: #1ab2ff;
+  --color-ocean-500: #0099e6;
+  --color-ocean-600: #0077b3;
+  --color-ocean-700: #005580;
+  --color-ocean-800: #00334d;
+  --color-ocean-900: #001a26;
+
+  --color-coral-400: #ff6b8a;
+  --color-coral-500: #ff4d6d;
+
+  --color-seagreen-400: #2dd4a8;
+  --color-seagreen-500: #10b981;
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Upload dropzone animation */
+@keyframes border-dance {
+  0% { background-position: 0 0, 100% 0, 100% 100%, 0 100%; }
+  100% { background-position: 100% 0, 100% 100%, 0 100%, 0 0; }
+}
+
+.dropzone-active {
+  background-image:
+    linear-gradient(90deg, #0099e6 50%, transparent 50%),
+    linear-gradient(90deg, #0099e6 50%, transparent 50%),
+    linear-gradient(0deg, #0099e6 50%, transparent 50%),
+    linear-gradient(0deg, #0099e6 50%, transparent 50%);
+  background-size: 20px 2px, 20px 2px, 2px 20px, 2px 20px;
+  background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+  animation: border-dance 1s linear infinite;
+}
+
+/* Pulse glow effect */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(0, 153, 230, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(0, 153, 230, 0.6); }
+}
+
+.glow-pulse {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #0099e6, #2dd4a8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glass effect */
+.glass {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(51, 65, 85, 0.5);
+}
+
+/* Fade in animation */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+/* Spinner */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spin-slow {
+  animation: spin-slow 2s linear infinite;
+}

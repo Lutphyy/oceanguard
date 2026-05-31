@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penjelasan 5W1H - OceanGuard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', 'Times New Roman', serif;
+            font-size: 12pt;
+            line-height: 1.6;
+            color: #1a1a1a;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20mm 25mm;
+            background: #fff;
+        }
+        h1 { font-size: 16pt; text-align: center; margin-bottom: 5px; color: #0a3d62; }
+        h2 { font-size: 14pt; color: #0a3d62; margin-top: 25px; margin-bottom: 12px; border-bottom: 2px solid #0a3d62; padding-bottom: 5px; }
+        h3 { font-size: 12pt; color: #1e8449; margin-top: 15px; margin-bottom: 8px; }
+        p { text-align: justify; margin-bottom: 10px; }
+        .subtitle { text-align: center; font-size: 11pt; color: #555; margin-bottom: 25px; }
+        .judul-box {
+            background: #eaf2f8;
+            border-left: 5px solid #0a3d62;
+            padding: 15px 20px;
+            margin: 15px 0;
+            font-size: 13pt;
+            font-weight: bold;
+            text-align: center;
+        }
+        .w-box {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0 15px 0;
+        }
+        .highlight { background: #fff3cd; padding: 2px 5px; border-radius: 3px; font-weight: bold; }
+        .keyword { color: #0a3d62; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 11pt; }
+        table, th, td { border: 1px solid #aaa; }
+        th { background: #0a3d62; color: #fff; padding: 8px; text-align: center; }
+        td { padding: 8px; vertical-align: top; }
+        ul, ol { margin-left: 25px; margin-bottom: 10px; }
+        li { margin-bottom: 5px; }
+        .tip { background: #d4edda; border-left: 4px solid #1e8449; padding: 10px 15px; margin: 10px 0; font-size: 11pt; }
+        .warn { background: #fff3cd; border-left: 4px solid #f39c12; padding: 10px 15px; margin: 10px 0; font-size: 11pt; }
+        hr { border: none; border-top: 1px solid #ccc; margin: 20px 0; }
+        code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 10pt; }
+    </style>
+</head>
+<body>
+
+    <h1>📖 Penjelasan 5W1H</h1>
+    <div class="judul-box">
+        "OceanGuard: Sistem Deteksi dan Klasifikasi Sampah Laut<br>
+        Berbasis Deep Learning Menggunakan YOLOv8"
+    </div>
+    <p class="subtitle">Panduan pemahaman mendalam untuk presentasi dan tanya jawab</p>
+
+    <hr>
+
+    <!-- ============================= -->
+    <!-- WHAT -->
+    <!-- ============================= -->
+    <h2>1. WHAT — Apa Itu OceanGuard?</h2>
+
+    <h3>1.1 Pengertian Singkat</h3>
+    <p>
+        <span class="keyword">OceanGuard</span> adalah sebuah <span class="highlight">aplikasi web</span> yang mampu 
+        mendeteksi (menemukan lokasi) dan mengklasifikasi (menentukan jenis) sampah laut dari gambar atau video 
+        yang diunggah oleh pengguna. Aplikasi ini menggunakan model <i>deep learning</i> bernama 
+        <span class="keyword">YOLOv8</span> untuk melakukan analisis citra secara otomatis.
+    </p>
+
+    <h3>1.2 Apa yang Dilakukan Sistem Ini?</h3>
+    <div class="w-box">
+        <ol>
+            <li><strong>Menerima Input:</strong> Pengguna mengunggah gambar/video yang berisi pemandangan bawah laut atau pesisir pantai.</li>
+            <li><strong>Memproses Citra:</strong> Sistem melakukan preprocessing (resize, normalisasi warna, enhance kontras).</li>
+            <li><strong>Mendeteksi Objek:</strong> Model YOLOv8 mendeteksi semua objek sampah dalam gambar — menandai posisinya dengan <i>bounding box</i> (kotak pembatas).</li>
+            <li><strong>Mengklasifikasi Jenis:</strong> Setiap objek yang terdeteksi diklasifikasikan ke dalam kategori: plastik, botol, kaleng, jaring, kantong plastik, atau lainnya.</li>
+            <li><strong>Menampilkan Hasil:</strong> Hasil ditampilkan berupa gambar dengan bounding box berwarna, label jenis sampah, confidence score (tingkat keyakinan), dan statistik jumlah per kategori.</li>
+        </ol>
+    </div>
+
+    <h3>1.3 Apa Bedanya dengan Proyek Sejenis?</h3>
+    <table>
+        <tr>
+            <th>Aspek</th>
+            <th>Proyek Umum (Notebook)</th>
+            <th>OceanGuard (Kita)</th>
+        </tr>
+        <tr>
+            <td>Bentuk</td>
+            <td>Jupyter Notebook saja</td>
+            <td>Aplikasi web yang bisa diakses publik</td>
+        </tr>
+        <tr>
+            <td>Pengguna</td>
+            <td>Hanya developer/researcher</td>
+            <td>Siapa saja (user umum)</td>
+        </tr>
+        <tr>
+            <td>Input</td>
+            <td>File lokal di komputer</td>
+            <td>Upload via browser, bisa dari HP</td>
+        </tr>
+        <tr>
+            <td>Output</td>
+            <td>Angka metrik saja</td>
+            <td>Visualisasi interaktif + statistik</td>
+        </tr>
+        <tr>
+            <td>Akses</td>
+            <td>Lokal saja</td>
+            <td>Online, bisa diakses siapa saja</td>
+        </tr>
+    </table>
+
+    <h3>1.4 Apa Itu YOLOv8?</h3>
+    <p>
+        <span class="keyword">YOLO</span> adalah singkatan dari <strong>"You Only Look Once"</strong> — sebuah arsitektur 
+        <i>deep learning</i> untuk <i>object detection</i> (deteksi objek). "Look Once" artinya model hanya perlu 
+        melihat gambar <strong>satu kali</strong> untuk mendeteksi semua objek sekaligus, berbeda dengan metode lama 
+        yang harus memindai gambar berkali-kali.
+    </p>
+    <p>
+        <span class="keyword">YOLOv8</span> adalah versi ke-8, dikembangkan oleh <strong>Ultralytics</strong> (Januari 2023). 
+        Ini adalah versi paling baru dan paling canggih dari keluarga YOLO, dengan keunggulan:
+    </p>
+    <ul>
+        <li><strong>Anchor-free detection:</strong> Tidak lagi menggunakan anchor box yang rigid, sehingga lebih fleksibel mendeteksi objek berbagai bentuk.</li>
+        <li><strong>Decoupled head:</strong> Memisahkan tugas klasifikasi dan lokalisasi, sehingga masing-masing bisa dioptimalkan lebih baik.</li>
+        <li><strong>C2f module:</strong> Arsitektur backbone yang lebih efisien (menggantikan C3 di YOLOv5).</li>
+        <li><strong>Mosaic augmentation:</strong> Teknik augmentasi yang menggabungkan 4 gambar jadi 1 saat training.</li>
+    </ul>
+
+    <div class="tip">
+        <strong>💡 Kalau ditanya dosen:</strong> "Kenapa YOLOv8, bukan YOLOv5 atau Faster R-CNN?"<br>
+        <strong>Jawab:</strong> "YOLOv8 memiliki arsitektur anchor-free dan decoupled head yang menghasilkan akurasi 
+        lebih tinggi dengan kecepatan inferensi lebih cepat. Pada benchmark COCO, YOLOv8n mencapai mAP 37.3 
+        dengan 80.4 FPS, lebih baik dari YOLOv5n (28.0 mAP). Selain itu, YOLOv8 sudah matang dan didukung oleh 
+        library Ultralytics yang sangat well-documented."
+    </div>
+
+    <h3>1.5 Apa Itu Deep Learning?</h3>
+    <p>
+        <span class="keyword">Deep Learning</span> adalah sub-bidang dari <i>Machine Learning</i> yang menggunakan 
+        <strong>jaringan saraf tiruan (neural network)</strong> dengan banyak lapisan (<i>deep</i> = dalam/banyak layer). 
+        Dalam konteks pengolahan citra:
+    </p>
+    <ul>
+        <li><strong>Layer awal</strong> → belajar mengenali fitur sederhana (garis, tepi, warna)</li>
+        <li><strong>Layer tengah</strong> → belajar mengenali fitur kompleks (tekstur, pola, bentuk)</li>
+        <li><strong>Layer akhir</strong> → belajar mengenali objek utuh (botol, plastik, kaleng)</li>
+    </ul>
+    <p>
+        Proses "belajar" ini disebut <strong>training</strong>, di mana model diberikan ribuan gambar contoh beserta 
+        label (anotasi) yang menunjukkan di mana dan apa objek-objek dalam gambar tersebut. Setelah training, 
+        model bisa mengenali objek pada gambar baru yang belum pernah dilihat sebelumnya.
+    </p>
+
+    <h3>1.6 Apa Itu Transfer Learning?</h3>
+    <p>
+        Kita <strong>tidak melatih model dari nol</strong>. Kita menggunakan model YOLOv8 yang sudah dilatih pada 
+        dataset besar bernama <strong>COCO</strong> (330K gambar, 80 kategori objek umum). Model ini sudah "pintar" 
+        mengenali bentuk dasar objek. Kita tinggal <strong>fine-tune</strong> (melatih ulang) pada dataset sampah laut 
+        kita, sehingga model belajar mengenali sampah spesifik di bawah laut. Ini disebut <span class="keyword">Transfer Learning</span>.
+    </p>
+    <div class="tip">
+        <strong>💡 Analogi sederhana:</strong> Seperti orang yang sudah bisa bahasa Inggris, lalu belajar bahasa Belanda. 
+        Karena strukturnya mirip, belajarnya jadi lebih cepat daripada dari nol.
+    </div>
+
+    <hr>
+
+    <!-- ============================= -->
+    <!-- WHY -->
+    <!-- ============================= -->
+    <h2>2. WHY — Mengapa Proyek Ini Penting?</h2>
+
+    <h3>2.1 Mengapa Sampah Laut Jadi Masalah?</h3>
+    <ul>
+        <li>Indonesia menghasilkan <strong>7,8 juta ton sampah plastik/tahun</strong>, ~4,9 juta ton masuk ke laut.</li>
+        <li>Indonesia adalah <strong>penyumbang sampah laut terbesar ke-2</strong> di dunia (setelah China).</li>
+        <li>Sampah laut merusak <strong>terumbu karang</strong>, membunuh <strong>biota laut</strong>, dan mencemari <strong>rantai makanan</strong> (mikroplastik).</li>
+        <li>Dampak ekonomi: kerugian sektor perikanan dan pariwisata bahari mencapai <strong>triliunan rupiah/tahun</strong>.</li>
+    </ul>
+
+    <h3>2.2 Mengapa Monitoring Manual Tidak Cukup?</h3>
+    <table>
+        <tr>
+            <th>Aspek</th>
+            <th>Monitoring Manual</th>
+            <th>Dengan AI/Deep Learning</th>
+        </tr>
+        <tr>
+            <td>Kecepatan</td>
+            <td>Lambat, butuh penyelam/relawan</td>
+            <td>Deteksi dalam milidetik (real-time)</td>
+        </tr>
+        <tr>
+            <td>Cakupan</td>
+            <td>Area terbatas</td>
+            <td>Bisa diproses dari gambar/video drone, ROV</td>
+        </tr>
+        <tr>
+            <td>Konsistensi</td>
+            <td>Tergantung kondisi penyelam (capek, visibility)</td>
+            <td>Konsisten 24/7, tidak kelelahan</td>
+        </tr>
+        <tr>
+            <td>Biaya</td>
+            <td>Mahal (logistik, tim penyelam)</td>
+            <td>Murah (cukup kamera + software)</td>
+        </tr>
+        <tr>
+            <td>Data</td>
+            <td>Subjektif, sulit dikuantifikasi</td>
+            <td>Objektif, terukur (jumlah, jenis, lokasi)</td>
+        </tr>
+    </table>
+
+    <h3>2.3 Mengapa Memilih Tema Kemaritiman?</h3>
+    <ul>
+        <li>Sesuai dengan <strong>ketentuan proyek</strong> yang mewajibkan tema kemaritiman/pesisir/laut.</li>
+        <li>Indonesia adalah <strong>negara maritim</strong> — masalah sampah laut sangat relevan dan urgent.</li>
+        <li>Menunjukkan bahwa teknologi AI bisa diaplikasikan untuk <strong>konservasi lingkungan</strong>.</li>
+        <li>Memiliki potensi <strong>implementasi nyata</strong> — bisa digunakan oleh lembaga konservasi, pemda, nelayan.</li>
+    </ul>
+
+    <h3>2.4 Mengapa Memilih YOLOv8?</h3>
+    <ul>
+        <li><strong>State-of-the-art:</strong> Model terbaik saat ini untuk object detection real-time.</li>
+        <li><strong>Ringan:</strong> YOLOv8n hanya ~6MB, bisa jalan di GPU entry-level (RTX 2050).</li>
+        <li><strong>Cepat:</strong> Inferensi <50ms per gambar — cocok untuk aplikasi web real-time.</li>
+        <li><strong>Mudah dipakai:</strong> Library Ultralytics membuat training dan deployment sangat simpel (1 command).</li>
+        <li><strong>Banyak referensi:</strong> Sudah banyak paper 2024-2025 yang menggunakan YOLOv8 untuk marine debris detection.</li>
+    </ul>
+
+    <div class="tip">
+        <strong>💡 Kalau ditanya dosen:</strong> "Kenapa tidak pakai metode tradisional seperti edge detection atau template matching?"<br>
+        <strong>Jawab:</strong> "Metode tradisional tidak robust terhadap variasi kondisi bawah laut 
+        (turbiditas, pencahayaan, sudut pandang, pertumbuhan alga pada sampah). 
+        Deep learning bisa mempelajari fitur-fitur kompleks ini secara otomatis dari data, 
+        sehingga jauh lebih akurat dan adaptif."
+    </div>
+
+    <hr>
+
+    <!-- ============================= -->
+    <!-- WHO -->
+    <!-- ============================= -->
+    <h2>3. WHO — Siapa yang Terlibat dan Siapa Penggunanya?</h2>
+
+    <h3>3.1 Siapa yang Membuat?</h3>
+    <p>Kelompok mahasiswa (3 orang) untuk mata kuliah <strong>Pengolahan Citra Digital</strong>, Semester Genap 2025/2026.</p>
+
+    <h3>3.2 Siapa Target Pengguna?</h3>
+    <table>
+        <tr>
+            <th>Pengguna</th>
+            <th>Kebutuhan</th>
+            <th>Cara Pakai OceanGuard</th>
+        </tr>
+        <tr>
+            <td><strong>Peneliti Kelautan</strong></td>
+            <td>Survei dan kuantifikasi sampah laut</td>
+            <td>Upload foto survei → dapatkan statistik jenis dan jumlah sampah</td>
+        </tr>
+        <tr>
+            <td><strong>Lembaga Konservasi</strong> (WWF, LIPI, dll.)</td>
+            <td>Monitoring berkala kondisi perairan</td>
+            <td>Upload foto/video dari drone/ROV → identifikasi hotspot pencemaran</td>
+        </tr>
+        <tr>
+            <td><strong>Pemerintah Daerah</strong> (DKP, DLH)</td>
+            <td>Data untuk kebijakan pengelolaan sampah</td>
+            <td>Analisis tren pencemaran berdasarkan data deteksi</td>
+        </tr>
+        <tr>
+            <td><strong>Nelayan / Masyarakat Pesisir</strong></td>
+            <td>Melaporkan pencemaran di area tangkapan</td>
+            <td>Foto dari HP → upload → laporan otomatis</td>
+        </tr>
+        <tr>
+            <td><strong>Mahasiswa / Akademisi</strong></td>
+            <td>Penelitian dan edukasi</td>
+            <td>Eksperimen dengan model dan dataset</td>
+        </tr>
+    </table>
+
+    <h3>3.3 Siapa yang Pernah Riset Topik Ini?</h3>
+    <ul>
+        <li><strong>Akilandeswari et al. (2024)</strong> — YOLOv8 untuk underwater trash, akurasi tinggi.</li>
+        <li><strong>Zhu et al. (2024)</strong> — YOLOv8-C2f-Faster-EMA, peningkatan mAP 5% untuk small debris.</li>
+        <li><strong>Kundu (2025)</strong> — MLH-CNN + YOLOv8 pada dataset Seaclear.</li>
+        <li><strong>Fulton et al. (2019)</strong> — Pembuat dataset Trash-ICRA19 (IEEE ICRA).</li>
+        <li><strong>Hong et al. (2020)</strong> — Pembuat dataset TrashCan (arXiv).</li>
+    </ul>
+
+    <hr>
+
+    <!-- ============================= -->
+    <!-- WHERE -->
+    <!-- ============================= -->
+    <h2>4. WHERE — Di Mana Proyek Ini Digunakan?</h2>
+
+    <h3>4.1 Di Mana Sistem Ini Berjalan?</h3>
+    <table>
+        <tr>
+            <th>Komponen</th>
+            <th>Lokasi</th>
+            <th>Keterangan</th>
+        </tr>
+        <tr>
+            <td>Frontend (UI)</td>
+            <td>Browser pengguna (web)</td>
+            <td>Bisa diakses dari PC, laptop, HP — cukup buka URL</td>
+        </tr>
+        <tr>
+            <td>Backend (API + Model)</td>
+            <td>Cloud server (Railway / HuggingFace)</td>
+            <td>Model YOLOv8 berjalan di server, bukan di perangkat pengguna</td>
+        </tr>
+        <tr>
+            <td>Training Model</td>
+            <td>Lokal (RTX 2050) atau Google Colab</td>
+            <td>Training dilakukan sekali, hasilnya di-deploy ke server</td>
+        </tr>
+    </table>
+
+    <h3>4.2 Di Mana Data Citra Berasal?</h3>
+    <ul>
+        <li><strong>Dataset publik:</strong> Roboflow Universe, Kaggle (data penelitian global)</li>
+        <li><strong>Lingkungan target:</strong> Perairan laut Indonesia — pesisir, dasar laut, permukaan laut</li>
+        <li><strong>Sumber potensial:</strong> Kamera underwater, drone laut, ROV (Remotely Operated Vehicle), bahkan kamera HP biasa</li>
+    </ul>
+
+    <h3>4.3 Di Mana Aplikasi Di-hosting?</h3>
+    <ul>
+        <li><strong>Frontend:</strong> Vercel (CDN global, gratis) — akses cepat dari mana saja</li>
+        <li><strong>Backend:</strong> Railway atau HuggingFace Spaces (gratis, mendukung Python + ML)</li>
+        <li><strong>Akses:</strong> Bisa diakses dari <strong>seluruh dunia</strong> via URL, tanpa install apapun</li>
+    </ul>
+
+    <hr>
+
+    <!-- ============================= -->
+    <!-- WHEN -->
+    <!-- ============================= -->
+    <h2>5. WHEN — Kapan Proyek Ini Dibutuhkan?</h2>
+
+    <h3>5.1 Kapan Masalah Ini Harus Diatasi?</h3>
+    <p>
+        <strong>SEKARANG.</strong> Pencemaran sampah laut sudah mencapai titik kritis. Setiap tahun, 
+        <strong>8-12 juta ton plastik</strong> masuk ke lautan dunia. Jika tidak ditangani, pada tahun 
+        <strong>2050</strong> diperkirakan berat plastik di laut akan <strong>melebihi berat seluruh ikan</strong> 
+        (Ellen MacArthur Foundation, 2016).
+    </p>
+
+    <h3>5.2 Timeline Proyek</h3>
+    <table>
+        <tr>
+            <th>Minggu</th>
+            <th>Tanggal</th>
+            <th>Deliverable</th>
+        </tr>
+        <tr>
+            <td>11</td>
+            <td>23 Mei 2026</td>
+            <td>Proposal + dataset (BESOK!)</td>
+        </tr>
+        <tr>
+            <td>12</td>
+            <td>29 Mei 2026</td>
+            <td>Training model + hasil awal</td>
+        </tr>
+        <tr>
+            <td>13</td>
+            <td>4 Juni 2026</td>
+            <td>Aplikasi final + draft paper</td>
+        </tr>
+        <tr>
+            <td>14-15</td>
+            <td>11 & 18 Juni</td>
+            <td>Presentasi + demo</td>
+        </tr>
+    </table>
+
+    <h3>5.3 Kapan Teknologi Ini Matang?</h3>
+    <ul>
+        <li><strong>2016:</strong> YOLO v1 pertama kali diperkenalkan oleh Joseph Redmon.</li>
+        <li><strong>2020:</strong> Dataset TrashCan dipublikasi — mulai banyak riset marine debris detection.</li>
+        <li><strong>2023:</strong> YOLOv8 dirilis oleh Ultralytics — menjadi standar baru untuk object detection.</li>
+        <li><strong>2024-2025:</strong> Puluhan paper menggunakan YOLOv8 untuk marine debris — teknologi sudah <strong>sangat matang</strong>.</li>
+    </ul>
+
+    <hr>
+
+    <!-- ============================= -->
+    <!-- HOW -->
+    <!-- ============================= -->
+    <h2>6. HOW — Bagaimana Cara Kerjanya?</h2>
+
+    <h3>6.1 Alur Kerja Secara Keseluruhan</h3>
+    <div class="w-box">
+        <strong>TAHAP 1: PERSIAPAN DATA</strong>
+        <ol>
+            <li>Download dataset dari Roboflow Universe (format YOLO, sudah siap pakai)</li>
+            <li>Dataset berisi gambar bawah laut + file label (.txt) yang menandai posisi dan jenis sampah</li>
+            <li>Split data: 70% training, 15% validation, 15% testing</li>
+            <li>Augmentasi: rotasi, flip, perubahan brightness/contrast untuk menambah variasi</li>
+        </ol>
+        <br>
+        <strong>TAHAP 2: TRAINING MODEL</strong>
+        <ol>
+            <li>Load model YOLOv8n yang sudah pre-trained pada COCO</li>
+            <li>Fine-tune pada dataset sampah laut kita selama ~100 epoch</li>
+            <li>Sistem secara otomatis menyimpan model terbaik (<code>best.pt</code>)</li>
+            <li>Evaluasi: hitung mAP, Precision, Recall, Confusion Matrix</li>
+        </ol>
+        <br>
+        <strong>TAHAP 3: MEMBANGUN APLIKASI</strong>
+        <ol>
+            <li>Backend (FastAPI): Menerima gambar, jalankan model, kirim hasil</li>
+            <li>Frontend (Next.js): UI untuk upload gambar, tampilkan hasil deteksi</li>
+            <li>Integrasi: Frontend ↔ Backend via REST API</li>
+        </ol>
+        <br>
+        <strong>TAHAP 4: DEPLOYMENT</strong>
+        <ol>
+            <li>Frontend di-deploy ke Vercel (gratis)</li>
+            <li>Backend di-deploy ke Railway / HuggingFace (gratis)</li>
+            <li>Aplikasi bisa diakses via URL oleh siapa saja</li>
+        </ol>
+    </div>
+
+    <h3>6.2 Bagaimana YOLOv8 Mendeteksi Objek?</h3>
+    <div class="w-box">
+        <p><strong>Langkah-langkah di balik layar (saat model memproses 1 gambar):</strong></p>
+        <ol>
+            <li><strong>Input:</strong> Gambar di-resize menjadi 640×640 piksel.</li>
+            <li><strong>Backbone (CSPDarknet53):</strong> Mengekstrak fitur visual — dari fitur sederhana (tepi, warna) hingga fitur kompleks (bentuk botol, tekstur plastik).</li>
+            <li><strong>Neck (PANet):</strong> Menggabungkan fitur dari berbagai skala — supaya bisa mendeteksi objek kecil (potongan plastik) maupun besar (jaring ikan).</li>
+            <li><strong>Head (Decoupled):</strong> Membuat prediksi:
+                <ul>
+                    <li>Di mana objeknya? → <strong>Bounding box</strong> (x, y, lebar, tinggi)</li>
+                    <li>Apa jenisnya? → <strong>Class</strong> (plastik/botol/kaleng/dst.)</li>
+                    <li>Seberapa yakin? → <strong>Confidence score</strong> (0.0 - 1.0)</li>
+                </ul>
+            </li>
+            <li><strong>NMS (Non-Maximum Suppression):</strong> Menghapus bounding box duplikat — memastikan setiap objek hanya terdeteksi sekali.</li>
+            <li><strong>Output:</strong> Gambar dengan bounding box berwarna + label + score.</li>
+        </ol>
+    </div>
+
+    <h3>6.3 Bagaimana Mengukur Kinerja Model?</h3>
+    <table>
+        <tr>
+            <th>Metrik</th>
+            <th>Arti</th>
+            <th>Target Kita</th>
+        </tr>
+        <tr>
+            <td><strong>Precision</strong></td>
+            <td>Dari semua yang model bilang "ini sampah", berapa % yang benar?</td>
+            <td>≥ 80%</td>
+        </tr>
+        <tr>
+            <td><strong>Recall</strong></td>
+            <td>Dari semua sampah yang ada di gambar, berapa % yang berhasil ditemukan?</td>
+            <td>≥ 75%</td>
+        </tr>
+        <tr>
+            <td><strong>mAP@50</strong></td>
+            <td>Rata-rata precision di semua kelas pada IoU threshold 50%</td>
+            <td>≥ 75%</td>
+        </tr>
+        <tr>
+            <td><strong>mAP@50:95</strong></td>
+            <td>Metrik paling ketat — rata-rata precision pada berbagai IoU threshold</td>
+            <td>≥ 50%</td>
+        </tr>
+        <tr>
+            <td><strong>F1-Score</strong></td>
+            <td>Harmonik mean dari Precision dan Recall</td>
+            <td>≥ 75%</td>
+        </tr>
+        <tr>
+            <td><strong>Inference Speed</strong></td>
+            <td>Waktu untuk memproses 1 gambar</td>
+            <td>≤ 50ms</td>
+        </tr>
+    </table>
+
+    <div class="tip">
+        <strong>💡 Kalau ditanya dosen:</strong> "Apa bedanya Precision dan Recall?"<br>
+        <strong>Jawab:</strong> "Precision menjawab pertanyaan 'Apakah model tidak salah deteksi?' (menghindari <i>false positive</i>). 
+        Recall menjawab 'Apakah model tidak melewatkan sampah?' (menghindari <i>false negative</i>). 
+        Idealnya dua-duanya tinggi, dan F1-Score mengukur keseimbangan keduanya."
+    </div>
+
+    <h3>6.4 Bagaimana Cara Training dengan Hardware Terbatas?</h3>
+    <table>
+        <tr>
+            <th>Parameter</th>
+            <th>Pengaturan untuk RTX 2050 (4GB VRAM)</th>
+        </tr>
+        <tr>
+            <td>Model</td>
+            <td><strong>YOLOv8n</strong> (nano) — paling ringan, ~6MB</td>
+        </tr>
+        <tr>
+            <td>Batch Size</td>
+            <td><strong>8</strong> (kalau error, turunin ke 4)</td>
+        </tr>
+        <tr>
+            <td>Image Size</td>
+            <td><strong>640×640</strong> (standar)</td>
+        </tr>
+        <tr>
+            <td>Epochs</td>
+            <td><strong>100</strong> (dengan early stopping patience=20)</td>
+        </tr>
+        <tr>
+            <td>Workers</td>
+            <td><strong>4</strong> (i5 Gen 13 memadai)</td>
+        </tr>
+        <tr>
+            <td>Estimasi Waktu</td>
+            <td><strong>1-2 jam</strong> untuk 2000 gambar</td>
+        </tr>
+    </table>
+
+    <div class="warn">
+        <strong>⚠️ Kalau GPU lokal masih kurang:</strong> Gunakan <strong>Google Colab</strong> (gratis, GPU T4 15GB VRAM). 
+        Upload dataset ke Google Drive → training di Colab → download <code>best.pt</code>.
+    </div>
+
+    <hr>
+
+    <!-- ============================= -->
+    <!-- BONUS QUESTIONS -->
+    <!-- ============================= -->
+    <h2>7. BONUS — Pertanyaan yang Mungkin Ditanya Dosen</h2>
+
+    <div class="w-box">
+        <p><strong>Q: "Kenapa pilih object detection, bukan image classification?"</strong></p>
+        <p>A: Karena dalam 1 gambar bisa ada <strong>banyak jenis sampah sekaligus</strong> di posisi berbeda. 
+        Image classification hanya bisa bilang "ada sampah" atau "tidak ada". Object detection bisa menunjukkan 
+        <strong>di mana</strong> masing-masing sampah berada dan <strong>apa jenisnya</strong>.</p>
+    </div>
+
+    <div class="w-box">
+        <p><strong>Q: "Bagaimana mengatasi tantangan kondisi bawah laut?"</strong></p>
+        <p>A: Tiga cara: (1) <strong>CLAHE</strong> (Contrast Limited Adaptive Histogram Equalization) untuk memperbaiki 
+        kontras pada gambar bawah laut yang gelap/berkabut. (2) <strong>Color correction</strong> untuk mengatasi 
+        dominasi warna biru/hijau di bawah laut. (3) <strong>Augmentasi</strong> yang bervariasi saat training 
+        (mengubah brightness, contrast, hue) sehingga model robust terhadap kondisi berbeda.</p>
+    </div>
+
+    <div class="w-box">
+        <p><strong>Q: "Apa kelemahan sistem ini?"</strong></p>
+        <p>A: (1) Tergantung kualitas gambar — gambar sangat gelap/buram bisa menurunkan akurasi. 
+        (2) Kelas "others" terlalu umum — bisa jadi catch-all yang kurang presisi. 
+        (3) Model dilatih pada dataset tertentu — mungkin kurang akurat pada sampah dari lingkungan yang sangat berbeda 
+        (misal: sungai vs laut dalam). Ini bisa diatasi dengan <strong>menambah data training yang lebih beragam</strong>.</p>
+    </div>
+
+    <div class="w-box">
+        <p><strong>Q: "Kontribusi apa yang diberikan proyek ini?"</strong></p>
+        <p>A: (1) <strong>Kontribusi teknologi:</strong> Implementasi YOLOv8 untuk masalah spesifik Indonesia (sampah laut). 
+        (2) <strong>Kontribusi sosial:</strong> Alat bantu gratis bagi masyarakat dan lembaga untuk monitoring pencemaran. 
+        (3) <strong>Kontribusi akademik:</strong> Paper yang mendokumentasikan implementasi dan evaluasi model pada domain maritim.</p>
+    </div>
+
+    <div class="w-box">
+        <p><strong>Q: "Bagaimana kamu memastikan model tidak overfitting?"</strong></p>
+        <p>A: Empat cara: (1) <strong>Early stopping</strong> — training dihentikan otomatis jika val loss tidak membaik selama 20 epoch. 
+        (2) <strong>Augmentasi data</strong> — mosaic, flip, rotate untuk menambah variasi. 
+        (3) <strong>Pembagian data yang benar</strong> — 70/15/15 train/val/test, data test TIDAK pernah dilihat model saat training. 
+        (4) <strong>Monitoring learning curve</strong> — memastikan train loss dan val loss sama-sama turun.</p>
+    </div>
+
+    <hr>
+    <p style="text-align: center; font-size: 10pt; color: #888; margin-top: 20px;">
+        <em>Dokumen ini disiapkan untuk membantu pemahaman mendalam proyek OceanGuard.<br>
+        Pelajari dengan baik untuk persiapan presentasi dan tanya jawab.</em>
+    </p>
+
+</body>
+</html>

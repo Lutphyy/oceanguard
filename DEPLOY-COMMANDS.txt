@@ -1,0 +1,157 @@
+═══════════════════════════════════════════════════════════════
+🚀 OCEANGUARD - DEPLOYMENT COMMANDS
+═══════════════════════════════════════════════════════════════
+
+📋 COPY-PASTE COMMANDS INI SATU PER SATU
+
+═══════════════════════════════════════════════════════════════
+STEP 1: PUSH KE GITHUB
+═══════════════════════════════════════════════════════════════
+
+1. Buka Command Prompt / PowerShell
+2. Copy-paste command ini:
+
+cd "c:\Users\NITRO\Documents\Kuliah\Semester6\Pengelolaan Citra"
+
+3. Inisialisasi Git:
+
+git init
+
+4. Add semua file:
+
+git add .
+
+5. Commit:
+
+git commit -m "Initial commit - OceanGuard Marine Debris Detection"
+
+6. Buat repository di GitHub:
+   - Buka: https://github.com/new
+   - Nama: oceanguard-detection
+   - Public
+   - Klik "Create repository"
+
+7. Connect ke GitHub (GANTI USERNAME dengan username GitHub kamu):
+
+git remote add origin https://github.com/USERNAME/oceanguard-detection.git
+
+8. Push:
+
+git branch -M main
+git push -u origin main
+
+═══════════════════════════════════════════════════════════════
+STEP 2: DEPLOY BACKEND (RAILWAY)
+═══════════════════════════════════════════════════════════════
+
+1. Buka: https://railway.app/
+2. Login with GitHub
+3. Klik "New Project"
+4. Pilih "Deploy from GitHub repo"
+5. Pilih: oceanguard-detection
+6. Setelah project dibuat:
+   
+   Settings:
+   - Root Directory: backend
+   - Start Command: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+   
+   Variables (tab Variables):
+   - PORT = 8000
+   - PYTHONUNBUFFERED = 1
+   
+   Networking (tab Settings):
+   - Klik "Generate Domain"
+   - COPY URL (contoh: https://oceanguard-backend-xxx.railway.app)
+
+7. Tunggu deploy selesai (5-10 menit)
+
+8. Test backend:
+   Buka URL backend di browser, harusnya muncul:
+   {"status":"ok","message":"OceanGuard API is running"}
+
+═══════════════════════════════════════════════════════════════
+STEP 3: DEPLOY FRONTEND (VERCEL)
+═══════════════════════════════════════════════════════════════
+
+1. Buka: https://vercel.com/
+2. Login with GitHub
+3. Klik "Add New..." → "Project"
+4. Pilih: oceanguard-detection
+5. Configure:
+   
+   Framework Preset: Next.js
+   Root Directory: frontend
+   Build Command: npm run build
+   Output Directory: .next
+   Install Command: npm install
+
+6. Environment Variables:
+   Name: NEXT_PUBLIC_API_URL
+   Value: [PASTE URL RAILWAY KAMU DI SINI]
+   
+   Contoh: https://oceanguard-backend-xxx.railway.app
+
+7. Klik "Deploy"
+8. Tunggu 2-3 menit
+9. COPY URL frontend (contoh: https://oceanguard-xxx.vercel.app)
+
+═══════════════════════════════════════════════════════════════
+STEP 4: UPDATE BACKEND CORS (OPSIONAL)
+═══════════════════════════════════════════════════════════════
+
+Jika ada CORS error, tambahkan environment variable di Railway:
+
+Variables:
+- ALLOWED_ORIGINS = https://oceanguard-xxx.vercel.app
+
+Lalu redeploy backend.
+
+═══════════════════════════════════════════════════════════════
+✅ SELESAI!
+═══════════════════════════════════════════════════════════════
+
+Frontend: https://oceanguard-xxx.vercel.app
+Backend: https://oceanguard-backend-xxx.railway.app
+
+Test aplikasi:
+1. Buka frontend URL
+2. Upload gambar
+3. Adjust confidence threshold
+4. Klik "Mulai Deteksi"
+
+═══════════════════════════════════════════════════════════════
+🐛 TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════
+
+❌ Git error: "not a git repository"
+✅ Pastikan sudah run: git init
+
+❌ Git error: "remote origin already exists"
+✅ Run: git remote remove origin
+   Lalu run lagi: git remote add origin ...
+
+❌ Backend deploy gagal
+✅ Check Railway logs: Dashboard → Deployments → View Logs
+✅ Pastikan Root Directory = backend
+✅ Pastikan Start Command benar
+
+❌ Frontend error: "Failed to fetch"
+✅ Check NEXT_PUBLIC_API_URL sudah benar
+✅ Check backend sudah running (buka URL backend)
+✅ Redeploy frontend setelah update env variable
+
+❌ Backend lambat (>10 menit)
+✅ NORMAL! Dependencies besar (~2GB)
+✅ Tunggu saja, Railway sedang download torch & ultralytics
+
+═══════════════════════════════════════════════════════════════
+📝 CATATAN
+═══════════════════════════════════════════════════════════════
+
+- Model best.pt TIDAK akan ter-deploy (file terlalu besar)
+- Backend akan jalan dalam DEMO MODE (return sample data)
+- Untuk production, perlu upload model ke cloud storage
+- Vercel: GRATIS unlimited
+- Railway: GRATIS $5 credit/bulan
+
+═══════════════════════════════════════════════════════════════

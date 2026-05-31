@@ -1,0 +1,183 @@
+═══════════════════════════════════════════════════════════════
+🚀 OCEANGUARD - QUICK DEPLOYMENT GUIDE
+═══════════════════════════════════════════════════════════════
+
+📋 CHECKLIST SEBELUM DEPLOY:
+  ☐ best.pt ada di model/weights/
+  ☐ Code sudah di GitHub
+  ☐ Sudah baca DEPLOYMENT-GUIDE.html
+
+═══════════════════════════════════════════════════════════════
+🔧 STEP 1: FIX CODE (30 MENIT)
+═══════════════════════════════════════════════════════════════
+
+1. Buat file: frontend/.env.local
+   ────────────────────────────────
+   NEXT_PUBLIC_API_URL=http://localhost:8000
+
+2. Update: backend/app/main.py
+   ────────────────────────────────
+   Tambahkan setelah app = FastAPI():
+
+   from fastapi.middleware.cors import CORSMiddleware
+   
+   app.add_middleware(
+       CORSMiddleware,
+       allow_origins=[
+           "http://localhost:3000",
+           "https://*.vercel.app",  # Ganti nanti
+       ],
+       allow_credentials=True,
+       allow_methods=["*"],
+       allow_headers=["*"],
+   )
+
+3. Update: backend/requirements.txt
+   ────────────────────────────────
+   fastapi==0.115.0
+   uvicorn[standard]==0.32.0
+   python-multipart==0.0.12
+   ultralytics==8.3.0
+   opencv-python-headless==4.10.0.84
+   pillow==11.0.0
+   numpy==1.26.4
+   python-dotenv==1.0.1
+
+4. Commit & Push ke GitHub
+   ────────────────────────────────
+   git add .
+   git commit -m "Prepare for deployment"
+   git push
+
+═══════════════════════════════════════════════════════════════
+🚂 STEP 2: DEPLOY BACKEND - RAILWAY (30 MENIT)
+═══════════════════════════════════════════════════════════════
+
+1. Buka: https://railway.app
+2. Login dengan GitHub
+3. Klik "New Project" → "Deploy from GitHub repo"
+4. Select repository kamu
+5. Railway auto-detect Python → Klik "Deploy"
+6. Tunggu build selesai (~5 menit)
+7. Buka Settings → Networking → Generate Domain
+8. Copy URL: https://oceanguard-backend.railway.app
+
+✅ TEST: Buka https://oceanguard-backend.railway.app/docs
+   (Harus muncul Swagger UI!)
+
+═══════════════════════════════════════════════════════════════
+🎨 STEP 3: DEPLOY FRONTEND - VERCEL (30 MENIT)
+═══════════════════════════════════════════════════════════════
+
+1. Update frontend/.env.local:
+   ────────────────────────────────
+   NEXT_PUBLIC_API_URL=https://oceanguard-backend.railway.app
+
+2. Commit & Push:
+   ────────────────────────────────
+   git add .
+   git commit -m "Update API URL for production"
+   git push
+
+3. Buka: https://vercel.com
+4. Login dengan GitHub
+5. Klik "Add New Project"
+6. Import repository kamu
+7. Vercel auto-detect Next.js
+8. Klik "Deploy"
+9. Tunggu build selesai (~3 menit)
+10. Copy URL: https://oceanguard.vercel.app
+
+✅ TEST: Buka https://oceanguard.vercel.app
+   (Harus muncul homepage!)
+
+═══════════════════════════════════════════════════════════════
+🔄 STEP 4: UPDATE CORS (10 MENIT)
+═══════════════════════════════════════════════════════════════
+
+1. Update backend/app/main.py:
+   ────────────────────────────────
+   allow_origins=[
+       "http://localhost:3000",
+       "https://oceanguard.vercel.app",  # ← URL kamu!
+   ]
+
+2. Commit & Push:
+   ────────────────────────────────
+   git add .
+   git commit -m "Update CORS for production"
+   git push
+
+3. Railway akan auto-redeploy (~2 menit)
+
+✅ TEST: Upload gambar di https://oceanguard.vercel.app
+   (Harus bisa deteksi!)
+
+═══════════════════════════════════════════════════════════════
+🎯 FINAL CHECKLIST
+═══════════════════════════════════════════════════════════════
+
+☐ Backend deployed: https://oceanguard-backend.railway.app
+☐ Frontend deployed: https://oceanguard.vercel.app
+☐ CORS updated dengan frontend URL
+☐ Test upload gambar → Deteksi jalan ✅
+☐ Screenshot aplikasi untuk laporan
+☐ Copy URL untuk presentasi
+
+═══════════════════════════════════════════════════════════════
+🚨 TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════
+
+❌ CORS Error:
+   → Check allow_origins di backend/app/main.py
+   → Pastikan frontend URL benar
+   → Redeploy backend
+
+❌ Model Not Found:
+   → Pastikan best.pt ada di repository
+   → Check .gitignore (jangan ignore *.pt)
+   → Push ulang
+
+❌ Railway Out of Memory:
+   → Gunakan YOLOv8 Nano (bukan Small)
+   → Sudah benar? Good!
+
+═══════════════════════════════════════════════════════════════
+📊 PLATFORM INFO
+═══════════════════════════════════════════════════════════════
+
+VERCEL (Frontend):
+  • FREE tier: 100 GB bandwidth/bulan
+  • Auto-deploy dari GitHub
+  • URL: https://oceanguard.vercel.app
+
+RAILWAY (Backend):
+  • FREE: $5 credit/bulan (~500 jam)
+  • Auto-deploy dari GitHub
+  • URL: https://oceanguard-backend.railway.app
+
+TOTAL BIAYA: $0/bulan (FREE!)
+
+═══════════════════════════════════════════════════════════════
+💡 TIPS
+═══════════════════════════════════════════════════════════════
+
+1. Deploy backend DULU, baru frontend
+2. Test setiap step sebelum lanjut
+3. Screenshot setiap progress
+4. Simpan URL untuk laporan
+5. Kalau error, cek logs di Railway/Vercel dashboard
+
+═══════════════════════════════════════════════════════════════
+🎉 SELESAI!
+═══════════════════════════════════════════════════════════════
+
+Aplikasi kamu sekarang ONLINE 24/7!
+
+✅ Backend: https://oceanguard-backend.railway.app
+✅ Frontend: https://oceanguard.vercel.app
+✅ Siap untuk demo & presentasi!
+
+Good luck bro! 🚀
+
+═══════════════════════════════════════════════════════════════

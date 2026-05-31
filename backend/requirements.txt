@@ -1,0 +1,18 @@
+# OceanGuard Backend Dependencies
+# Python 3.10+
+
+# Web Framework
+fastapi==0.115.0
+uvicorn[standard]==0.30.0
+python-multipart==0.0.9
+
+# ML / Computer Vision
+ultralytics==8.3.0
+torch>=2.0.0
+torchvision>=0.15.0
+opencv-python-headless==4.10.0.84
+Pillow>=10.0.0
+numpy>=1.24.0
+
+# Utilities
+python-dotenv==1.0.1

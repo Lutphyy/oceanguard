@@ -1,0 +1,115 @@
+═══════════════════════════════════════════════════════════════
+🚀 DEPLOY OCEANGUARD - LANGKAH CEPAT
+═══════════════════════════════════════════════════════════════
+
+📋 PERSIAPAN (5 MENIT)
+═══════════════════════════════════════════════════════════════
+
+1. Buat akun (GRATIS):
+   ✅ GitHub: https://github.com/signup
+   ✅ Vercel: https://vercel.com/ (login pakai GitHub)
+   ✅ Railway: https://railway.app/ (login pakai GitHub)
+
+2. Install Git (jika belum):
+   https://git-scm.com/downloads
+
+═══════════════════════════════════════════════════════════════
+🔥 DEPLOY SEKARANG (15 MENIT)
+═══════════════════════════════════════════════════════════════
+
+STEP 1: PUSH KE GITHUB (3 menit)
+───────────────────────────────────────────────────────────────
+Buka Command Prompt, copy-paste:
+
+cd "c:\Users\NITRO\Documents\Kuliah\Semester6\Pengelolaan Citra"
+git init
+git add .
+git commit -m "Initial commit"
+
+Lalu:
+1. Buka https://github.com/new
+2. Nama: oceanguard-detection
+3. Public → Create repository
+4. Copy command yang muncul (git remote add origin...)
+5. Paste di Command Prompt
+6. Run: git push -u origin main
+
+═══════════════════════════════════════════════════════════════
+
+STEP 2: UPLOAD MODEL KE GOOGLE DRIVE (2 menit)
+───────────────────────────────────────────────────────────────
+1. Buka https://drive.google.com/
+2. Upload file: model/weights/best.pt
+3. Klik kanan → Share → "Anyone with the link"
+4. Copy link (contoh: https://drive.google.com/file/d/1ABC...XYZ/view)
+5. Ambil FILE ID (bagian antara /d/ dan /view)
+   Contoh: 1ABC...XYZ
+6. SIMPAN FILE ID ini!
+
+═══════════════════════════════════════════════════════════════
+
+STEP 3: DEPLOY BACKEND (10 menit)
+───────────────────────────────────────────────────────────────
+1. Buka https://railway.app/
+2. Login with GitHub
+3. New Project → Deploy from GitHub repo
+4. Pilih: oceanguard-detection
+5. Settings:
+   - Root Directory: backend
+   - Start Command: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+6. Variables (PENTING!):
+   - PORT = 8000
+   - MODEL_DRIVE_ID = [PASTE FILE ID GOOGLE DRIVE]
+7. Settings → Networking → Generate Domain
+8. COPY URL backend (contoh: https://xxx.railway.app)
+9. Tunggu deploy selesai (5-10 menit)
+
+═══════════════════════════════════════════════════════════════
+
+STEP 4: DEPLOY FRONTEND (2 menit)
+───────────────────────────────────────────────────────────────
+1. Buka https://vercel.com/
+2. Login with GitHub
+3. Add New → Project
+4. Pilih: oceanguard-detection
+5. Root Directory: frontend
+6. Environment Variables:
+   - Name: NEXT_PUBLIC_API_URL
+   - Value: [PASTE URL RAILWAY]
+7. Deploy
+8. Tunggu 2-3 menit
+9. COPY URL frontend
+
+═══════════════════════════════════════════════════════════════
+✅ SELESAI!
+═══════════════════════════════════════════════════════════════
+
+Frontend: https://oceanguard-xxx.vercel.app
+Backend: https://oceanguard-backend-xxx.railway.app
+
+Test:
+1. Buka frontend URL
+2. Upload gambar
+3. Klik "Mulai Deteksi"
+
+═══════════════════════════════════════════════════════════════
+📝 CATATAN PENTING
+═══════════════════════════════════════════════════════════════
+
+✅ Model AKAN ter-deploy (via Google Drive auto-download)
+✅ Backend akan download model otomatis saat start
+✅ Deteksi akan REAL (bukan demo mode)
+⚠️ Startup backend sedikit lebih lama (10-30 detik untuk download model)
+
+💰 BIAYA: GRATIS untuk project kuliah!
+
+═══════════════════════════════════════════════════════════════
+🆘 BUTUH BANTUAN?
+═══════════════════════════════════════════════════════════════
+
+Baca file lengkap:
+- DEPLOYMENT-STEPS.md (panduan detail)
+- DEPLOY-COMMANDS.txt (semua command)
+- FILES-TO-DELETE.txt (file yang bisa dihapus)
+
+═══════════════════════════════════════════════════════════════
