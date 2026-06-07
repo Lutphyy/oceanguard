@@ -32,38 +32,6 @@ Pengelolaan Citra/
 └── docs/                   # Documentation & Reports
 ```
 
-### 🚀 Quick Start
-
-#### Backend
-```bash
-cd backend
-pip install -r requirements.txt
-uvicorn app.main:app --reload
-```
-
-#### Model Training
-```bash
-cd model
-pip install -r requirements.txt
-python scripts/train.py
-```
-
-#### Frontend
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-### 📊 Model Performance (Target)
-
-| Metric | Target |
-|--------|--------|
-| mAP@50 | ≥ 0.75 |
-| mAP@50:95 | ≥ 0.50 |
-| Precision | ≥ 0.80 |
-| Recall | ≥ 0.75 |
-| Inference Speed | ≤ 50ms/image |
 
 ### 📝 License
 
