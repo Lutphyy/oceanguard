@@ -24,7 +24,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isDragOver, setIsDragOver] = useState(false);
-  const [confidenceThreshold, setConfidenceThreshold] = useState(0.25); // NEW: Confidence threshold
+  const [confidenceThreshold, setConfidenceThreshold] = useState(0.40); // NEW: Confidence threshold (default 40%)
   const fileInputRef = useRef(null);
 
   const handleFileSelect = useCallback((file) => {
@@ -250,9 +250,9 @@ export default function Home() {
                   </div>
                   <input
                     type="range"
-                    min="0.10"
-                    max="0.90"
-                    step="0.05"
+                    min="0.01"
+                    max="0.99"
+                    step="0.01"
                     value={confidenceThreshold}
                     onChange={(e) =>
                       setConfidenceThreshold(parseFloat(e.target.value))
@@ -260,8 +260,8 @@ export default function Home() {
                     className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-ocean-500"
                   />
                   <div className="flex justify-between text-xs text-slate-500">
-                    <span>10% (Lebih banyak deteksi)</span>
-                    <span>90% (Lebih akurat)</span>
+                    <span>1% (Lebih banyak deteksi)</span>
+                    <span>99% (Lebih akurat)</span>
                   </div>
                   <p className="text-xs text-slate-400">
                     💡 Threshold rendah = deteksi lebih banyak objek (tapi bisa
