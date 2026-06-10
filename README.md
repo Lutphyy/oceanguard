@@ -11,7 +11,7 @@ Aplikasi web untuk mendeteksi dan mengklasifikasi sampah laut dari gambar atau v
 | ML Model | YOLOv8 (Ultralytics) |
 | Backend | FastAPI (Python 3.10+) |
 | Frontend | Next.js 14 (React) |
-| Deployment | Vercel (frontend) + Railway (backend) |
+| Deployment | Vercel (frontend) + HuggingFace (backend) |
 
 ### 📁 Project Structure
 
